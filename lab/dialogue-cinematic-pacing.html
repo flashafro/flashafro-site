@@ -78,7 +78,7 @@
       <p>The premise: two vampire characters, Ethan and Seraphine, are in a gothic library. Seraphine has her sights on Rosa, a human girl she intends to prey on. Ethan intervenes. What follows is a slow-burn dynamic between Ethan and Rosa that the series builds on beyond the first episode.</p>
       <p>Rosa is the FMC. She is the human drawn into a world she did not ask to be part of, quiet and bookish on the surface, considerably more resilient underneath. Ethan is the MMC. He was designed as a specific kind of character. Think Vampire Diaries crossed with Dante from Devil May Cry. Brooding, sarcastic, magnetically insufferable. He quickly became my favourite character in the whole AI cast roster, which probably explains why I kept making episodes.</p>
       <p>Seraphine appears in the first part only. She is the catalyst. Cold, precise, dangerous. Her attempt to prey on Rosa is what pulls Ethan into the scene and sets everything else in motion.</p>
-      <p>The technical challenge was significant. This was the first time I had introduced scripted dialogue into an AI-generated sequence. That meant solving for character consistency across multiple scenes, realistic mouth movement during speech, physical interaction between two characters in the same frame, and maintaining the gothic library environment across every shot.</p>
+      <p>The technical challenge was real. This was the first time I had introduced scripted dialogue into an AI-generated sequence. That meant solving for character consistency across multiple scenes, realistic mouth movement during speech, physical interaction between two characters in the same frame, and maintaining the gothic library environment across every shot.</p>
       <p>Spoiler: not all of those got fully solved. But the failures were as instructive as the successes.</p>
     </div>
 
@@ -135,7 +135,7 @@
             <div class="lb-hint"><span>click to expand</span></div>
           </div>
         </div>
-        <p style="font-family:var(--font-body); font-size:14px; color:rgba(26,20,16,0.6); line-height:1.75; margin:0;">Ethan is the MMC. Vampire, centuries old, presents as early thirties. The energy is Vampire Diaries crossed with Dante from Devil May Cry — brooding and sarcastic with an underlying intensity that makes him difficult to ignore. He intervenes when Seraphine targets Rosa, which is how the series begins.</p>
+        <p style="font-family:var(--font-body); font-size:14px; color:rgba(26,20,16,0.6); line-height:1.75; margin:0;">Ethan is the MMC. Vampire, centuries old, presents as early thirties. The energy is Vampire Diaries crossed with Dante from Devil May Cry. Brooding and sarcastic, with an underlying intensity that makes him difficult to ignore. He intervenes when Seraphine targets Rosa, which is how the series begins.</p>
       </div>
 
       <!-- Rosa -->
@@ -217,12 +217,12 @@
     <!-- ── WHAT WENT WRONG ── -->
     <div style="background:#1a1410; border-radius:12px; padding:40px 36px; margin:0 0 40px;">
       <div class="exp-section-label" style="color:rgba(245,240,232,0.45);">What Went Wrong</div>
-      <h3 style="color:#F5F0E8; margin-top:8px;">The physical interaction problem</h3>
+      <h3 style="color:#F5F0E8; margin-top:8px;">The &#8216;taking out the trash&#8217; problem</h3>
 
       <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The hardest shots in the sequence were the ones requiring two characters to physically interact.</p>
       <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The context matters here. Before the dragging scene, Ethan has already been toying with Seraphine. He is not threatened by her. The fight, if you can call it that, is entirely one-sided and he knows it. His dialogue during it includes lines like 'ooo you almost got me with that one' and 'are you even trying to hit me.' He is entertained. She is not.</p>
       <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The dragging scene is the conclusion of that dynamic. He grabs her and hauls her away from Rosa with the energy of someone removing a minor inconvenience, delivering the line 'So, what did we learn today Seraphine' as he goes. It is dismissive, slightly theatrical, and completely in character.</p>
-      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">Generating it was a different story. The model understood individual character movement and it understood two characters occupying the same frame. What it could not reliably produce was directed physical force from one character onto another — the specific quality of Ethan grabbing Seraphine with intent and pulling her in a particular direction while she is not cooperating.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">Generating it was a different story. The model understood individual character movement and it understood two characters occupying the same frame. What it could not reliably produce was directed physical force from one character onto another. The specific quality of Ethan grabbing Seraphine with intent and pulling her in a particular direction while she resists.</p>
       <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">What came back instead ranged from the two of them standing near each other with no contact, to Ethan pushing her from behind like he was operating a mop, to both characters moving independently in completely different directions with no connection between them at all.</p>
       <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The irony is that the scene is meant to show Ethan completely in control. The generations made it look like nobody was.</p>
       <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:28px;">Two of the more memorable failed attempts:</p>
@@ -261,23 +261,23 @@
       </div>
       <script src="https://player.vimeo.com/api/player.js"></script>
 
-      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:14px; line-height:1.75; margin:0;">Physical character interaction remains one of the harder problems in AI video generation. The model is strong on individual character performance. It struggles when the action requires understanding force, direction and contact between two bodies simultaneously.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:14px; line-height:1.75; margin:0;">Physical character interaction is still one of the hardest things to get right in AI video. The model handles individual character performance well. It breaks down when the action requires force, direction and contact between two bodies at once.</p>
     </div>
 
     <div class="exp-section">
       <div class="exp-section-label">Process</div>
       <h3>How I approached it</h3>
-      <p>The strongest results came when the workflow followed a familiar production pipeline. Story first, then visual concepting, followed by shot composition, motion generation, and finally sound design. Treating AI tools as part of a structured filmmaking process produced far more consistent and usable results than trying to generate finished scenes in a single step.</p>
-      <p>Pre-visualisation and iteration were critical. Using image generation to establish characters, environments and shot compositions before committing to video generation helped significantly reduce wasted attempts. It also made it easier to control character placement, camera framing and action beats across multiple clips.</p>
-      <p>In practice this meant approaching AI video less like a one-click solution and more like directing a scene. Testing ideas, refining prompts and gradually building the final sequence layer by layer.</p>
-      <p>Introducing dialogue and voice performance added a new level of complexity but also significantly improved the sense of narrative. Recording the dialogue first and then transforming it using voice synthesis allowed the pacing and tone of the scene to feel more intentional.</p>
+      <p>The strongest results came from following a familiar production pipeline. Story first, then visual concepting, then shot composition, motion generation and sound design. Treating the AI tools as part of a proper filmmaking process got far better results than trying to generate finished scenes in one go.</p>
+      <p>Pre-visualisation mattered a lot. Using image generation to lock down characters, environments and shot compositions before committing to video cut the number of wasted attempts considerably. It also gave me tighter control over character placement, camera framing and action beats across multiple clips.</p>
+      <p>In practice this meant approaching AI video less like a one-click solution and more like directing a scene. Testing ideas, refining prompts and gradually building the final sequence shot by shot.</p>
+      <p>Adding dialogue and voice performance made the whole thing harder but also made it feel more like an actual story. Recording the dialogue first, then processing it through voice synthesis, gave me much more control over pacing and tone.</p>
     </div>
 
     <div class="exp-section">
       <div class="exp-section-label">Key Learnings</div>
       <h3>What I took away</h3>
-      <p>While AI video still has limitations around precise character movement and interaction, those limitations can be managed through careful planning, reference imagery and iterative prompting.</p>
-      <p>The finished piece proved the concept for a hybrid creative workflow, where AI tools support the role of a director and make fast experimentation across visual storytelling, shot composition and sound design genuinely viable.</p>
+      <p>AI video still has real limits around precise character movement and interaction. You can work around most of them with careful planning, reference imagery and iterative prompting.</p>
+      <p>The finished piece proved a hybrid creative workflow can hold up. When AI tools are working under human direction, with real decisions being made about shot composition, visual storytelling and sound, you get something with actual narrative shape.</p>
       <p>The strongest takeaway: AI can generate visuals quickly, but the best results still come from combining those tools with human direction, timing and storytelling instincts.</p>
     </div>
 
