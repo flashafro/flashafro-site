@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/js/cookie-consent.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POST TITLE — FlashAfro</title>
+  <meta name="description" content="POST DESCRIPTION" />
+  <link rel="icon" href="../assets/images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV — with back arrow (item 2) -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-back">← thoughts</a>
+    <a href="../index.html" data-nav-href="index.html" class="nav-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+    <ul class="nav-links">
+      <li><a href="../index.html" data-nav-href="index.html" class="nav-link magnetic">Home</a></li>
+      <li><a href="../index.html#lab"      data-nav-href="index.html#lab"      class="nav-link magnetic">The Lab</a></li>
+      <li><a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="nav-link magnetic">Thoughts</a></li>
+      <li><a href="../index.html#about"    data-nav-href="index.html#about"    class="nav-link magnetic">About</a></li>
+      <li><a href="../index.html#connect"  data-nav-href="index.html#connect"  class="nav-cta magnetic">Connect</a></li>
+    </ul>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html" data-nav-href="index.html" class="mobile-link">Home</a>
+    <a href="../index.html#lab"      data-nav-href="index.html#lab"      class="mobile-link">The Lab</a>
+    <a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="mobile-link">Thoughts</a>
+    <a href="../index.html#about"    data-nav-href="index.html#about"    class="mobile-link">About</a>
+    <a href="../index.html#connect"  data-nav-href="index.html#connect"  class="mobile-link">Connect</a>
+  </div>
+
+  <!-- POST — ambient doodles in margins -->
+  <img class="doodle-element doodle-coral post-doodle-1" id="doodle-laughing"
+       src="../assets/doodles/cheryl-laughing.png" alt="" aria-hidden="true" />
+  <img class="doodle-element doodle-purple post-doodle-2" id="doodle-thinking"
+       src="../assets/doodles/cheryl-thinking.png" alt="" aria-hidden="true" />
+  <img class="doodle-element doodle-teal post-doodle-3" id="doodle-enthusiastic"
+       src="../assets/doodles/cheryl-enthusiastic.png" alt="" aria-hidden="true" />
+
+  <main class="post-wrap">
+    <div class="post-eyebrow">CATEGORY</div>
+    <h1 class="post-title">Post headline goes here</h1>
+    <div class="post-meta">
+      <span class="post-date handwritten">Month Year</span>
+      <span class="post-reading-time">X min read</span>
+    </div>
+
+    <div class="post-body">
+      <p>Opening paragraph. Set the scene — what were you trying to do, what were you wrestling with? Keep it grounded and personal.</p>
+
+      <h2>A section heading</h2>
+
+      <p>Body copy continues here at 16px / 1.85 line-height. DM Sans light weight. Generous whitespace between paragraphs.</p>
+
+      <blockquote>A key insight or quote, set in Caveat for visual texture.</blockquote>
+
+      <p>Closing thoughts. What changed? What are you still figuring out?</p>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <a href="../index.html" data-nav-href="index.html" class="nav-logo-text footer-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+        <p class="footer-tagline handwritten">making 'things' with AI ✦</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="../index.html" data-nav-href="index.html">Home</a>
+        <a href="../index.html#lab" data-nav-href="index.html#lab">The Lab</a>
+        <a href="../index.html#thoughts" data-nav-href="index.html#thoughts">Thoughts</a>
+        <a href="../index.html#about" data-nav-href="index.html#about">About</a>
+        <a href="../index.html#connect" data-nav-href="index.html#connect">Connect</a>
+      </nav>
+      <p class="footer-copy">© 2026 Cheryl Harris / FlashAfro.com Made with curiosity.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/nav-paths.js"></script>
+  <script src="../assets/js/cursor.js"></script>
+  <script src="../assets/js/nav-active.js"></script>
+  <script src="../main.js"></script>
+  <style>
+    /* Post-page doodle margin positions */
+    .post-doodle-1 {
+      position: fixed;
+      top: 30vh;
+      right: 24px;
+      height: 110px;
+      width: auto;
+      --doodle-rot: 6deg;
+      --doodle-delay: 0.4s;
+    }
+    .post-doodle-2 {
+      position: fixed;
+      top: 60vh;
+      left: 16px;
+      height: 120px;
+      width: auto;
+      --doodle-rot: -5deg;
+      --doodle-delay: 0.6s;
+    }
+    .post-doodle-3 {
+      position: fixed;
+      bottom: 15vh;
+      right: 32px;
+      height: 100px;
+      width: auto;
+      --doodle-rot: 4deg;
+      --doodle-delay: 0.8s;
+    }
+    /* On screens narrower than ~1100px the fixed doodles would overlap text — hide them */
+    @media (max-width: 1080px) {
+      .post-doodle-1, .post-doodle-2, .post-doodle-3 { display: none; }
+    }
+    /* nav back + logo side by side */
+    .nav { gap: 16px; }
+  </style>
+</body>
+</html>

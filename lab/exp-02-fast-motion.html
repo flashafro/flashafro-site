@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/js/cookie-consent.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exp-02: Portrait Consistency — FlashAfro Lab</title>
+  <meta name="description" content="Keeping an AI character looking like themselves across different scenes, lighting, and emotional states." />
+  <link rel="icon" href="../assets/images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-back">← the lab</a>
+    <a href="../index.html" data-nav-href="index.html" class="nav-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+    <ul class="nav-links">
+      <li><a href="../index.html" data-nav-href="index.html" class="nav-link magnetic">Home</a></li>
+      <li><a href="../index.html#lab"      data-nav-href="index.html#lab"      class="nav-link magnetic">The Lab</a></li>
+      <li><a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="nav-link magnetic">Thoughts</a></li>
+      <li><a href="../index.html#about"    data-nav-href="index.html#about"    class="nav-link magnetic">About</a></li>
+      <li><a href="../index.html#connect"  data-nav-href="index.html#connect"  class="nav-cta magnetic">Connect</a></li>
+    </ul>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html" data-nav-href="index.html" class="mobile-link">Home</a>
+    <a href="../index.html#lab"      data-nav-href="index.html#lab"      class="mobile-link">The Lab</a>
+    <a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="mobile-link">Thoughts</a>
+    <a href="../index.html#about"    data-nav-href="index.html#about"    class="mobile-link">About</a>
+    <a href="../index.html#connect"  data-nav-href="index.html#connect"  class="mobile-link">Connect</a>
+  </div>
+
+  <main class="exp-wrap">
+
+    <div class="exp-number">02</div>
+    <div class="post-eyebrow">The Lab</div>
+    <h1 class="exp-title">Portrait Consistency</h1>
+
+    <div class="exp-tools">
+      <span class="exp-tool-pill">Midjourney v6</span>
+      <span class="exp-tool-pill">Character reference (--cref)</span>
+      <span class="exp-tool-pill">Vary (subtle)</span>
+      <span class="exp-tool-pill">Inpainting</span>
+    </div>
+
+    <div class="exp-media">
+      <img src="../assets/images/naomi.jpg" alt="Naomi — portrait consistency test" />
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-label">Brief</div>
+      <h3>What I was testing</h3>
+      <p>Building on Exp-01, I wanted to go deep on one character and push the consistency question harder. The specific challenge: can a single AI character remain recognisably themselves across radically different scenes — different lighting conditions, emotional states, time periods, and visual styles — without manual image editing?</p>
+      <p>The character for this experiment was Naomi: a specific visual identity I wanted to hold across at least 40 generations.</p>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-label">Process</div>
+      <h3>How I approached it</h3>
+      <p>I built an initial reference set of 12 images across different contexts — indoor/outdoor, close-up/medium shot, neutral and emotionally charged. The diversity of the reference set matters enormously; a homogeneous reference set produces a character who only looks consistent in one type of shot.</p>
+      <p>I then ran 40+ generations across a spread of scenarios: portrait in natural daylight, a confrontation scene, a quiet reflective moment, a scene from the 1970s, a film noir treatment, a contemporary drama. Each tested a different dimension of identity drift.</p>
+      <p>I tracked which features were most stable and which were most prone to the model's reinterpretation — cataloguing drift across eye shape, skin tone, jaw structure, and hair.</p>
+    </div>
+
+    <div class="exp-section">
+      <div class="exp-section-label">Findings</div>
+      <h3>What actually happened</h3>
+      <p>The most stable features: overall face shape, skin tone (when specified with specific reference language), and distinctive features like a strong brow or particular nose shape. These hold reasonably well even under extreme style changes.</p>
+      <p>The least stable: eye colour (drifts toward the model's defaults under high-contrast lighting), hair when subjected to period or stylistic filters (the model wants to stylise it), and emotional expressions — the further from neutral, the more drift.</p>
+      <p>The biggest thing that didn't work: trying to hold consistency through prompt language alone, without image references. Written descriptions are not stable anchors. The model's interpretation of "dark brown eyes, medium brown skin, strong jaw" is wildly variable. Images anchor in a way words simply don't.</p>
+      <p>Unexpected finding: style prompts are more corrosive to consistency than scene changes. Putting a character in a rainstorm is fine. Putting a character "in the style of a 1940s film poster" causes significant identity drift because the model's stylistic transformation overrides the character reference. Style prompts and character consistency are in tension — you have to pick a lane.</p>
+    </div>
+
+    <div class="exp-nav">
+      <a href="exp-01-character-consistency.html">← Exp-01: Building AI Characters</a>
+      <a href="exp-03-dialogue-pacing.html">Exp-03: Ethan &amp; Seraphine →</a>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <a href="../index.html" data-nav-href="index.html" class="nav-logo-text footer-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+        <p class="footer-tagline handwritten">making 'things' with AI ✦</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="../index.html" data-nav-href="index.html">Home</a>
+        <a href="../index.html#lab" data-nav-href="index.html#lab">The Lab</a>
+        <a href="../index.html#thoughts" data-nav-href="index.html#thoughts">Thoughts</a>
+        <a href="../index.html#about" data-nav-href="index.html#about">About</a>
+        <a href="../index.html#connect" data-nav-href="index.html#connect">Connect</a>
+      </nav>
+      <p class="footer-copy">© 2026 Cheryl Harris / FlashAfro.com Made with curiosity.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/nav-paths.js"></script>
+  <script src="../assets/js/cursor.js"></script>
+  <script src="../assets/js/nav-active.js"></script>
+  <script src="../main.js"></script>
+</body>
+</html>

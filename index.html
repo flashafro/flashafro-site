@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="assets/js/cookie-consent.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlashAfro — Cheryl Harris · AI & Creative R&D</title>
+  <meta name="description" content="FlashAfro is Cheryl Harris's AI & Creative R&D lab. Making things with AI." />
+  <link rel="icon" href="assets/images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- CURSOR FOLLOWER -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+    <ul class="nav-links">
+      <li><a href="#top" class="nav-link magnetic">Home</a></li>
+      <li><a href="#lab"      class="nav-link magnetic">The Lab</a></li>
+      <li><a href="#thoughts" class="nav-link magnetic">Thoughts</a></li>
+      <li><a href="#about"    class="nav-link magnetic">About</a></li>
+      <li><a href="#connect"  class="nav-cta magnetic">Connect</a></li>
+    </ul>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#top" class="mobile-link">Home</a>
+    <a href="#lab"      class="mobile-link">The Lab</a>
+    <a href="#thoughts" class="mobile-link">Thoughts</a>
+    <a href="#about"    class="mobile-link">About</a>
+    <a href="#connect"  class="mobile-link">Connect</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+
+    <div class="hero-left">
+      <div class="hero-left-inner">
+        <div class="hero-eyebrow reveal-child">AI & Creative R&amp;D Lab</div>
+        <h1 class="hero-headline reveal-child" id="heroHeadline">
+          <!-- Row 1: verb phrase — cycles through variations, purple -->
+          <span class="hl-row hl-row-1" id="hlRow1">
+            <span class="hl-text" id="hlVerb">Making</span>
+            <span class="hl-strike" id="hlStrike1" aria-hidden="true"></span>
+            <span class="hl-mask"  id="hlMask1"  aria-hidden="true"></span>
+            <img  class="hl-eraser" id="hlEraser1" src="assets/doodles/rubber.png" alt="" aria-hidden="true" />
+          </span>
+          <!-- Row 2: 'things' — static across all variations -->
+          <span class="hl-row hl-row-2" id="hlRow2">
+            <span class="hl-text" id="hlThings">&#x2018;things&#x2019;</span>
+            <span class="hl-strike" id="hlStrike2" aria-hidden="true"></span>
+            <span class="hl-mask"  id="hlMask2"  aria-hidden="true"></span>
+            <img  class="hl-eraser" id="hlEraser2" src="assets/doodles/rubber.png" alt="" aria-hidden="true" />
+          </span>
+          <!-- Row 3: STATIC, coral, never animated -->
+          <span class="hl-row hl-row-3">with <span class="hl-ai">AI.</span></span>
+        </h1>
+        <p class="hero-sub reveal-child">
+          This is where I (Cheryl) test what AI can do in creative hands. Rigorously, honestly, and very much in public.
+        </p>
+        <div class="hero-actions reveal-child">
+          <a href="#lab"   class="btn-primary magnetic">See the experiments</a>
+          <a href="#about" class="btn-ghost magnetic">Who's Cheryl?</a>
+        </div>
+
+        <!-- DOODLE: skeptical — lower-right of hero-left-inner -->
+        <img class="doodle-element doodle-purple reveal-child" id="doodle-skeptical"
+             src="assets/doodles/cheryl-skeptical.png" alt="" aria-hidden="true" />
+      </div>
+    </div>
+
+    <!-- Hero video panel -->
+    <div class="hero-right">
+      <video
+        id="heroVideo"
+        class="hero-video"
+        src="assets/video/hellovideo2.mp4"
+        autoplay
+        muted
+        playsinline
+      ></video>
+
+      <!-- Scanline overlay -->
+      <div class="video-scanlines" aria-hidden="true"></div>
+
+      <!-- Hover process reveal — bottom left -->
+      <div class="video-process-reveal" aria-hidden="true">
+        <span class="handwritten">made with: Kling + Nano Banana Pro</span>
+      </div>
+
+      <!-- Hello prompt — shown before / during split reveal -->
+      <div class="video-overlay-text" id="videoHint">
+        <span class="handwritten">clicky to skippy </span>
+      </div>
+
+      <!-- Replay button — shown after video ends in settled state -->
+      <div class="video-replay" id="videoReplay" aria-hidden="true">
+        <button class="replay-btn" id="replayBtn" aria-label="Replay video">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 .49-3.51"></path>
+          </svg>
+        </button>
+        <span class="replay-label handwritten">replay</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-section">
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <!-- Set 1 -->
+        <div class="ticker-set">
+          <span>AI Filmmaking</span>
+          <span class="ticker-dot">✦</span>
+          <span>Generative Characters</span>
+          <span class="ticker-dot">✦</span>
+          <span>Animation</span>
+          <span class="ticker-dot">✦</span>
+          <span>Creative R&amp;D</span>
+          <span class="ticker-dot">✦</span>
+          <span>Visual Storytelling</span>
+          <span class="ticker-dot">✦</span>
+          <span>Image/Video Gen Models</span>
+          <span class="ticker-dot">✦</span>
+          <span>System Prompts</span>
+          <span class="ticker-dot">✦</span>
+          <span>Image Generation</span>
+          <span class="ticker-dot">✦</span>
+          <span>Prompt Craft</span>
+          <span class="ticker-dot">✦</span>
+          <span>Batch Processing</span>
+          <span class="ticker-dot">✦</span>
+          <span>LLM Integration</span>
+          <span class="ticker-dot">✦</span>
+        </div>
+        <!-- Set 2 — identical, aria-hidden to avoid screen reader duplication -->
+        <div class="ticker-set" aria-hidden="true">
+          <span>AI Filmmaking</span>
+          <span class="ticker-dot">✦</span>
+          <span>Generative Characters</span>
+          <span class="ticker-dot">✦</span>
+          <span>Animation</span>
+          <span class="ticker-dot">✦</span>
+          <span>Creative R&amp;D</span>
+          <span class="ticker-dot">✦</span>
+          <span>Visual Storytelling</span>
+          <span class="ticker-dot">✦</span>
+          <span>Image/Video Gen Models</span>
+          <span class="ticker-dot">✦</span>
+          <span>System Prompts</span>
+          <span class="ticker-dot">✦</span>
+          <span>Image Generation</span>
+          <span class="ticker-dot">✦</span>
+          <span>Prompt Craft</span>
+          <span class="ticker-dot">✦</span>
+          <span>Batch Processing</span>
+          <span class="ticker-dot">✦</span>
+          <span>LLM integration</span>
+          <span class="ticker-dot">✦</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- /ticker-section -->
+
+  <!-- THE LAB -->
+  <section class="lab" id="lab">
+    <!-- DOODLE: thinking [coral tint] — top-right -->
+    <img class="doodle-element doodle-coral" id="doodle-thinking"
+         src="assets/doodles/cheryl-thinking.png" alt="" aria-hidden="true" />
+    <!-- DOODLE: enthusiastic [teal tint] — bottom-right -->
+    <img class="doodle-element doodle-teal" id="doodle-enthusiastic"
+         src="assets/doodles/cheryl-enthusiastic.png" alt="" aria-hidden="true" />
+    <!-- DOODLE: tongue [purple tint] — bottom-left of grid -->
+    <img class="doodle-element doodle-purple" id="doodle-tongue"
+         src="assets/doodles/cheryl-tongue.png" alt="" aria-hidden="true" />
+
+    <div class="section-header">
+      <span class="section-tag">The Lab</span>
+      <h2 class="section-title">Experiments in progress</h2>
+      <p class="section-sub">What happens when a creative director gets her hands on AI tools and refuses to be boring about it.</p>
+    </div>
+
+    <div class="lab-scroll">
+
+      <!-- FEATURED card — full width -->
+      <article class="lab-card lab-card--featured drift-in" style="--delay: 0s">
+        <a href="lab/dialogue-cinematic-pacing.html" class="lab-card-link">
+          <div class="lab-card-img">
+            <img src="assets/images/ethan-seraphine.png" alt="Dialogue and Cinematic Pacing" />
+            <div class="lab-card-tag" style="background: var(--coral)">Latest</div>
+          </div>
+          <div class="lab-card-body">
+            <span class="lab-card-date">2026</span>
+            <h3>Dialogue and Cinematic Pacing</h3>
+            <p>Building tension, character and atmosphere through AI-generated dialogue and cinematic pacing. A three-part short film experiment.</p>
+            <span class="lab-link magnetic">Read more →</span>
+          </div>
+        </a>
+      </article>
+
+      <!-- Three equal cards below -->
+      <article class="lab-card drift-in" style="--tilt: -1.5deg; --delay: 0.05s">
+        <a href="lab/dynamic-camera-motion.html" class="lab-card-link">
+          <div class="lab-card-img">
+            <img src="assets/images/naomi.jpg" alt="Dynamic Camera and Fast Paced Motion" />
+          </div>
+          <div class="lab-card-body">
+            <span class="lab-card-date">2026</span>
+            <h3>Dynamic Camera and Fast Paced Motion</h3>
+            <p>Treating AI video as a directorial process. Shot composition, dynamic camera movement and rapid action cuts.</p>
+            <span class="lab-link magnetic">Read more →</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="lab-card drift-in" style="--tilt: 0.8deg; --delay: 0.1s">
+        <a href="lab/character-consistency.html" class="lab-card-link">
+          <div class="lab-card-img">
+            <img src="assets/images/bas-characters.jpg" alt="Character Consistency Across Style and Environment" />
+          </div>
+          <div class="lab-card-body">
+            <span class="lab-card-date">2026</span>
+            <h3>Character Consistency Across Style and Environment</h3>
+            <p>Testing whether a consistent character identity can survive multiple art styles, environments and motion systems.</p>
+            <span class="lab-link magnetic">Read more →</span>
+          </div>
+        </a>
+      </article>
+
+      <article class="lab-card lab-card--upcoming drift-in" style="--tilt: -0.6deg; --delay: 0.15s">
+        <a href="lab/world-building.html" class="lab-card-link">
+          <div class="lab-card-img">
+            <img src="assets/images/worldbuild-img.png" alt="World Building and Interconnected Environments" style="width:100%;height:100%;object-fit:cover;object-position:center;" />
+            <div class="lab-card-tag" style="background: var(--amber)">Coming soon</div>
+          </div>
+          <div class="lab-card-body">
+            <span class="lab-card-date">2026</span>
+            <h3>World Building and Interconnected Environments</h3>
+            <p>Establishing cohesive world environments and testing how interconnected locations hold together across generated scenes.</p>
+            <span class="lab-link magnetic" style="opacity:.4">In progress</span>
+          </div>
+        </a>
+      </article>
+
+    </div><!-- /lab-scroll -->
+
+    <div class="lab-more">
+      <a href="lab/index.html" class="btn-outline magnetic">View all experiments</a>
+    </div>
+  </section>
+
+  <!-- PORTRAIT STRIP -->
+  <section class="portraits" id="portraits">
+    <!-- DOODLE: delighted [teal tint] -->
+    <img class="doodle-element doodle-teal" id="doodle-delighted"
+         src="assets/doodles/cheryl-delighted.png" alt="" aria-hidden="true" />
+
+    <div class="section-header">
+      <span class="section-tag" style="color: var(--purple)">Cast and Crew</span>
+      <h2 class="section-title">The humans (and the not-so-humans)</h2>
+      <p class="portraits-sub">These are the characters I return to most in my experiments — each one built from scratch, with their own look, personality and story. Think of them as my standing cast.</p>
+    </div>
+
+    <div class="portrait-scroll-wrap">
+      <button class="portrait-nav portrait-nav--prev" id="portraitPrev" aria-label="Previous">←</button>
+
+      <div class="portrait-strip" id="portraitStrip">
+
+        <!-- 1: Cheryl — real human, no flip -->
+        <div class="portrait-item drift-in" style="--tilt: 2deg">
+          <div class="portrait-print">
+            <img src="assets/images/cheryl-human.jpeg" alt="Cheryl Harris" />
+          </div>
+          <div class="portrait-caption handwritten">Cheryl — the actual human 🙋🏾‍♀️</div>
+          <div class="portrait-subcaption handwritten">(and one of my mini-me-minions)</div>
+        </div>
+
+        <!-- 2: Naomi — video flip card -->
+        <div class="portrait-item portrait-item--vidflip drift-in" style="--tilt: -1.5deg">
+          <div class="portrait-card">
+            <div class="portrait-face portrait-face--front">
+              <div class="portrait-print dark-print">
+                <img src="assets/images/naomi.jpg" alt="Naomi" />
+              </div>
+            </div>
+            <div class="portrait-face portrait-face--back portrait-back--video">
+              <video class="portrait-vid"
+                data-src="assets/video/clips/naomi-vid.mp4"
+                muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="portrait-caption handwritten">Naomi</div>
+        </div>
+
+        <!-- 3: Seraphine — video flip card -->
+        <div class="portrait-item portrait-item--vidflip drift-in" style="--tilt: 1deg">
+          <div class="portrait-card">
+            <div class="portrait-face portrait-face--front">
+              <div class="portrait-print dark-print">
+                <img src="assets/images/seraphine-base.png" alt="Seraphine" />
+              </div>
+            </div>
+            <div class="portrait-face portrait-face--back portrait-back--video">
+              <video class="portrait-vid"
+                data-src="assets/video/clips/sera-vid.mp4"
+                muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="portrait-caption handwritten">Seraphine</div>
+        </div>
+
+        <!-- 4: Nyra — video flip card -->
+        <div class="portrait-item portrait-item--vidflip drift-in" style="--tilt: -2deg">
+          <div class="portrait-card">
+            <div class="portrait-face portrait-face--front">
+              <div class="portrait-print dark-print">
+                <img src="assets/images/nyra-base-2.png" alt="Nyra" />
+              </div>
+            </div>
+            <div class="portrait-face portrait-face--back portrait-back--video">
+              <video class="portrait-vid"
+                data-src="assets/video/clips/nyra-vid.mp4"
+                muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="portrait-caption handwritten">Nyra</div>
+        </div>
+
+        <!-- 5: Ethan — video flip card -->
+        <div class="portrait-item portrait-item--vidflip drift-in" style="--tilt: 1.5deg">
+          <div class="portrait-card">
+            <div class="portrait-face portrait-face--front">
+              <div class="portrait-print dark-print">
+                <img src="assets/images/ethan-base-v3.png" alt="Ethan" />
+              </div>
+            </div>
+            <div class="portrait-face portrait-face--back portrait-back--video">
+              <video class="portrait-vid"
+                data-src="assets/video/clips/ethan-vid.mp4"
+                muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="portrait-caption handwritten">Ethan</div>
+        </div>
+
+        <!-- 6: Rosa — video flip card -->
+        <div class="portrait-item portrait-item--vidflip drift-in" style="--tilt: -1deg">
+          <div class="portrait-card">
+            <div class="portrait-face portrait-face--front">
+              <div class="portrait-print dark-print">
+                <img src="assets/images/rosa-portrait.png" alt="Rosa" />
+              </div>
+            </div>
+            <div class="portrait-face portrait-face--back portrait-back--video">
+              <video class="portrait-vid"
+                data-src="assets/video/clips/rosa-vid.mp4"
+                muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="portrait-caption handwritten">Rosa</div>
+        </div>
+
+        <!-- 7: Kaelis — video flip card -->
+        <div class="portrait-item portrait-item--vidflip drift-in" style="--tilt: 2.5deg">
+          <div class="portrait-card">
+            <div class="portrait-face portrait-face--front">
+              <div class="portrait-print dark-print">
+                <img src="assets/images/kaelis-portrait4.png" alt="Kaelis" />
+              </div>
+            </div>
+            <div class="portrait-face portrait-face--back portrait-back--video">
+              <video class="portrait-vid"
+                data-src="assets/video/clips/kaelis-vid.mp4"
+                muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="portrait-caption handwritten">Kaelis</div>
+        </div>
+
+        <!-- 8: Jae — video flip card -->
+        <div class="portrait-item portrait-item--vidflip drift-in" style="--tilt: -1.5deg">
+          <div class="portrait-card">
+            <div class="portrait-face portrait-face--front">
+              <div class="portrait-print dark-print">
+                <img src="assets/images/Jae-base-image.png" alt="Jae"
+                     style="object-position: top center;" />
+              </div>
+            </div>
+            <div class="portrait-face portrait-face--back portrait-back--video">
+              <video class="portrait-vid"
+                data-src="assets/video/clips/jae-vid.mp4"
+                muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="portrait-caption handwritten">Jae</div>
+        </div>
+
+      </div>
+
+      <button class="portrait-nav portrait-nav--next" id="portraitNext" aria-label="Next">→</button>
+    </div>
+  </section>
+
+  <!-- REEL STRIP -->
+  <section class="reel" id="reel">
+    <div class="reel-inner">
+
+      <div class="reel-clip">
+        <video src="assets/video/clips/gilded-thief.mp4"
+               autoplay muted loop playsinline></video>
+      </div>
+
+      <div class="reel-clip reel-clip--desktop">
+        <video src="assets/video/clips/ethan-drag-seraphine.mp4"
+               autoplay muted loop playsinline></video>
+      </div>
+
+      <div class="reel-clip">
+        <video src="assets/video/clips/naomi-punch.mp4"
+               autoplay muted loop playsinline></video>
+      </div>
+
+      <div class="reel-clip reel-clip--desktop">
+        <video src="assets/video/clips/ethan-rosa.mp4"
+               autoplay muted loop playsinline></video>
+      </div>
+
+      <div class="reel-clip">
+        <video src="assets/video/clips/jin-kuro.mp4"
+               autoplay muted loop playsinline></video>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- THOUGHTS -->
+  <section class="thoughts" id="thoughts">
+    <!-- DOODLE: laughing [coral tint] -->
+    <img class="doodle-element doodle-coral" id="doodle-laughing"
+         src="assets/doodles/cheryl-laughing.png" alt="" aria-hidden="true" />
+
+    <div class="section-header">
+      <span class="section-tag" style="color: var(--amber)">Thoughts</span>
+      <h2 class="section-title">Notes from the lab</h2>
+      <p class="section-sub">Process notes, half-baked ideas, and things I'm figuring out in public.</p>
+    </div>
+
+    <div class="thoughts-grid">
+      <a href="thoughts/prompting-for-emotion.html" style="text-decoration:none;color:inherit;display:block;">
+        <article class="sticky-note drift-in" style="--tilt: -2deg; --delay: 0s; --note-bg: #FFE566">
+          <div class="sticky-tag">Prompt craft</div>
+          <h3>Prompting for emotion</h3>
+          <p>Describing a scene gets you a scene. Describing a feeling gets you something alive. It took me a while to figure that out.</p>
+          <div class="sticky-footer">
+            <span class="sticky-date handwritten">June 2026</span>
+            <span class="sticky-read">Read →</span>
+          </div>
+        </article>
+      </a>
+
+      <a href="thoughts/my-ai-toolstack.html" style="text-decoration:none;color:inherit;display:block;">
+        <article class="sticky-note drift-in" style="--tilt: 2deg; --delay: 0.1s; --note-bg: #D8F5E8">
+          <div class="sticky-tag">Process</div>
+          <h3>My current AI toolstack — and what I actually reach for</h3>
+          <p>What I thought I would use versus what I actually reach for. And why every tool in my stack has its own personality.</p>
+          <div class="sticky-footer">
+            <span class="sticky-date handwritten">May 2026</span>
+            <span class="sticky-read">Read →</span>
+          </div>
+        </article>
+      </a>
+    </div>
+
+    <div class="thoughts-more">
+      <a href="thoughts/index.html" class="btn-outline magnetic">All thoughts</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+
+    <div class="about-inner">
+      <div class="about-text">
+        <span class="section-tag" style="color: var(--yellow)">About</span>
+        <h2 class="about-title">Hi, I'm Cheryl.</h2>
+        <p class="about-body">
+          Senior creative director. Fifteen years building brand systems at scale across Prime Video, HBO Max, Apple TV+, Paramount+, Crunchyroll and more, across ten markets.
+        </p>
+        <p class="about-body">
+          FlashAfro.com is my R&amp;D lab. A place to experiment openly, document what I'm learning, and make things because I'm curious about what's possible.
+        </p>
+        <p class="about-body">
+          Some people might be asking where the 'FlashAfro' name came from. Well... it started with Flash cartoons. FlashAfro was my online pen name back in the day. Back when I use to make little flash cartoons (RIP Flash 😭) mostly for myself but also for the fun flash animation community that I found myself joining. There were no briefs, no clients, just me playing with some cool tools and seeing what could happen. That's still how I work today. Play is where the good stuff begins. Learning through play has always been the way that I broaden my creative skillset and these AI tools feel exactly like that to me. A new playground for my fully eccentric self.
+        </p>
+        <div class="about-actions">
+          <a href="#connect" class="btn-yellow magnetic">Get in touch</a>
+          <a href="#" class="btn-ghost-light magnetic">See my work</a>
+        </div>
+      </div>
+      <div class="about-image">
+        <div class="about-photo-wrap">
+          <img src="assets/images/cheryl.jpg" alt="Cheryl Harris" />
+          <div class="about-photo-label handwritten">the one and only ✦</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONNECT -->
+  <section class="connect" id="connect">
+    <img class="doodle-element doodle-coral doodle-visible" id="doodle-connect"
+         src="assets/doodles/cheryl-enthusiastic.png" alt="" aria-hidden="true"
+         style="--doodle-rot: 8deg; opacity: 0.18;" />
+    <div class="connect-inner">
+      <h2 class="connect-title">Let's talk.</h2>
+      <p class="connect-copy">
+        I like talking to people who are genuinely curious about this stuff.
+        Find me on LinkedIn or drop me an email.
+      </p>
+      <div class="connect-pills">
+        <a href="https://www.linkedin.com/in/cheryl-harris-uk/"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-connect-pill magnetic">LinkedIn</a>
+        <a href="#" class="btn-connect-pill magnetic">Email</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <a href="index.html" class="nav-logo-text footer-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+        <p class="footer-tagline handwritten">making 'things' with AI ✦</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#top">Home</a>
+        <a href="#lab">The Lab</a>
+        <a href="#thoughts">Thoughts</a>
+        <a href="#about">About</a>
+        <a href="#connect">Connect</a>
+      </nav>
+      <p class="footer-copy">© 2026 Cheryl Harris / FlashAfro.com Made with curiosity.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/cursor.js"></script>
+  <script src="assets/js/nav-active.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

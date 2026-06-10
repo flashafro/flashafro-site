@@ -1,0 +1,1816 @@
+/* ============================================
+   FLASHAFRO — style.css
+   ============================================ */
+
+/* ============================================
+   CHIBI DOODLE AMBIENT ELEMENTS
+   ============================================
+   Shared base + per-doodle positioning.
+   All are pointer-events:none, absolutely
+   positioned inside their parent section
+   (which must have position:relative).
+   Scroll-reveal is handled by JS toggling
+   the .doodle-visible class.
+   ============================================ */
+
+.doodle-element {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;               /* behind content */
+  /* --- scroll-reveal start state --- */
+  opacity: 0;
+  transform: translateY(20px) rotate(var(--doodle-rot, 0deg));
+  transition:
+    opacity  0.7s ease var(--doodle-delay, 0s),
+    transform 0.7s cubic-bezier(0.34, 1.2, 0.64, 1) var(--doodle-delay, 0s);
+}
+.doodle-element.doodle-visible {
+  opacity: var(--doodle-opacity, 0.15);
+  transform: translateY(0) rotate(var(--doodle-rot, 0deg));
+}
+
+/* Sections that contain doodles need relative positioning
+   (most already have it; these are belt-and-braces) */
+.hero,
+.hero-left,
+.lab,
+.portraits,
+.thoughts,
+.about,
+.footer,
+.ticker-section {
+  position: relative;
+}
+
+/* Ticker section wrapper — thin container, no clipping */
+.ticker-section {
+  overflow: visible;  /* let doodle poke out above */
+}
+
+/* ---- Doodle colour tinting [item 5] ---- */
+/* Uses sepia→saturate→hue-rotate to approximate brand colours.
+   At 0.18 opacity the tinting reads as texture, not illustration. */
+
+.doodle-coral {
+  /* target: #E85D26 — warm orange-red, hue ≈ 18° */
+  filter: sepia(1) saturate(5) hue-rotate(340deg) brightness(0.85);
+  --doodle-opacity: 0.18;
+}
+.doodle-purple {
+  /* target: #5B3FC8 — cool violet, hue ≈ 248° */
+  filter: sepia(1) saturate(6) hue-rotate(222deg) brightness(0.75);
+  --doodle-opacity: 0.18;
+}
+.doodle-teal {
+  /* target: #1D9E75 — mid teal, hue ≈ 158° */
+  filter: sepia(1) saturate(5) hue-rotate(116deg) brightness(0.82);
+  --doodle-opacity: 0.18;
+}
+
+/* ---- Per-doodle rules ---- */
+
+/* skeptical: lower-right of .hero-left-inner.
+   hero-left-inner has overflow:hidden so the doodle is fully
+   contained within the left text panel and can never bleed into
+   the video panel. right: 0 aligns to the inner panel's padding edge. */
+#doodle-skeptical {
+  position: absolute;
+  bottom: 32px;
+  right: 0;
+  height: 120px;
+  width: auto;
+  z-index: 2;
+  --doodle-rot: 8deg;
+  --doodle-delay: 0.4s;
+}
+
+/* tongue: bottom-left of the lab grid — fully clear of other elements */
+#doodle-tongue {
+  bottom: 72px;
+  left: 20px;
+  height: 100px;
+  width: auto;
+  z-index: 1;
+  --doodle-rot: 8deg;
+  --doodle-delay: 0.25s;
+}
+
+/* thinking: lab section, top-right margin */
+#doodle-thinking {
+  top: 24px;
+  right: 32px;
+  height: 140px;
+  width: auto;
+  --doodle-rot: 7deg;
+  --doodle-delay: 0s;
+}
+
+/* enthusiastic: lab section, bottom-right */
+#doodle-enthusiastic {
+  bottom: 80px;
+  right: 24px;
+  height: 120px;
+  width: auto;
+  --doodle-rot: -5deg;
+  --doodle-delay: 0.3s;
+}
+
+/* delighted: portrait strip, top-left */
+#doodle-delighted {
+  top: 20px;
+  left: 24px;
+  height: 115px;
+  width: auto;
+  --doodle-rot: 4deg;
+  --doodle-delay: 0.1s;
+}
+
+/* laughing: thoughts section, far right */
+#doodle-laughing {
+  top: 40%;
+  right: 16px;
+  height: 130px;
+  width: auto;
+  --doodle-rot: 8deg;
+  --doodle-delay: 0.2s;
+}
+
+
+
+/* --- Hide doodles on narrow screens where they'd crowd content --- */
+@media (max-width: 768px) {
+  .doodle-element {
+    display: none;
+  }
+}
+
+/* --- TOKENS --- */
+:root {
+  --cream:  #F5F0E8;
+  --cream2: #EDE7D9;
+  --coral:  #E85D26;
+  --purple: #5B3FC8;
+  --teal:   #2AB4A0;
+  --amber:  #D4820A;
+  --yellow: #FFE566;
+  --dark:   #1A1714;
+  --dark2:  #2A2420;
+  --ink:    #2C2620;
+
+  --font-display: 'Caveat', cursive;
+  --font-body:    'DM Sans', sans-serif;
+
+  --nav-h: 72px;
+  --radius: 4px;
+  --shadow: 0 4px 24px rgba(0,0,0,.12);
+  --shadow-card: 0 8px 32px rgba(0,0,0,.15);
+}
+
+/* --- RESET --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* ============================================
+   CUSTOM CURSOR — shared, all pages
+   State driven by data-cursor attribute on
+   #cursorDot and #cursorRing (set by cursor.js)
+   ============================================ */
+body { cursor: none; }
+@media (hover: none), (max-width: 768px) { body { cursor: auto; } }
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  /* centred on the coordinate cursor.js writes */
+  transform: translate(-50%, -50%);
+  /* CSS transitions provide the lag */
+  transition:
+    left 0.08s linear,
+    top  0.08s linear,
+    width .2s ease, height .2s ease,
+    background .15s ease, border-color .15s ease,
+    opacity .2s ease;
+  z-index: 9999;
+}
+
+/* --- Dot defaults --- */
+.cursor-dot {
+  width: 10px; height: 10px;
+  background: var(--coral);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0; /* hides play icon by default */
+  color: #fff;
+}
+
+/* --- Ring defaults --- */
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1.5px solid rgba(232,93,38,0.4);
+  background: transparent;
+  z-index: 9998;
+  transition:
+    left 0.12s linear,
+    top  0.12s linear,
+    width .2s ease, height .2s ease,
+    border-color .15s ease;
+}
+
+/* --- Button state --- */
+.cursor-dot[data-cursor="button"]  { background: var(--purple); }
+.cursor-ring[data-cursor="button"] { width: 44px; height: 44px; border-color: rgba(91,63,200,0.4); }
+
+/* --- Card state --- */
+.cursor-dot[data-cursor="card"]  { background: var(--yellow); }
+.cursor-ring[data-cursor="card"] { width: 48px; height: 48px; border-color: rgba(255,229,102,0.5); }
+
+/* --- Video panel state --- */
+.cursor-dot[data-cursor="video"] {
+  width: 20px; height: 20px;
+  background: var(--teal);
+  font-size: 8px; /* reveal play icon */
+}
+.cursor-dot[data-cursor="video"]::after {
+  content: '▶';
+  font-size: 8px;
+  line-height: 1;
+  color: #fff;
+  margin-left: 1px; /* optical centre */
+}
+.cursor-ring[data-cursor="video"] { width: 52px; height: 52px; border-color: rgba(29,158,117,0.4); }
+
+/* --- Link / nav state --- */
+.cursor-dot[data-cursor="link"]  { width: 6px; height: 6px; }
+.cursor-ring[data-cursor="link"] { width: 38px; height: 38px; }
+
+/* Hide on touch / mobile */
+@media (hover: none), (max-width: 768px) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* ============================================
+   HEADLINE CYCLING ANIMATION
+   ============================================ */
+
+/* The h1 itself — overflow visible so eraser
+   can poke above the row without clipping */
+.hero-headline {
+  overflow: visible;
+}
+
+/* Each line is a block with relative positioning
+   so absolute children (strike/mask/eraser) anchor here */
+.hl-row {
+  display: block;
+  position: relative;
+  overflow: visible;
+  line-height: 1.1;
+}
+
+/* The animating text node — inline-block gives reliable
+   offsetWidth/offsetLeft for JS measurement */
+.hl-text {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+
+/* Colour assignments */
+.hl-row-1 .hl-text { color: var(--purple); }
+.hl-row-2 .hl-text { color: var(--ink); opacity: 0.78; }
+.hl-row-3          { color: var(--coral); }
+.hl-ai             { color: var(--coral); }
+
+/* Strikethrough bar — width/left set by JS per word */
+.hl-strike {
+  position: absolute;
+  height: 5px;
+  background: #1a1410;
+  top: 0; left: 0;      /* JS overrides both */
+  width: 0;             /* JS sets to match word width */
+  transform: scaleX(0);
+  transform-origin: left center;
+  border-radius: 2px;
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* Mask — same cream as page background, covers word during erase */
+.hl-mask {
+  position: absolute;
+  top: 0; left: 0;      /* JS overrides */
+  width: 0;
+  height: 0;            /* JS sets to word height */
+  background: #F5F0E8;
+  z-index: 8;
+  pointer-events: none;
+}
+
+/* Eraser image */
+.hl-eraser {
+  position: absolute;
+  width: 80px;
+  top: 0; left: 0;      /* JS overrides */
+  transform: rotate(-15deg);
+  transform-origin: center bottom;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Eraser crumbs (spawned dynamically by JS) */
+.hl-crumb {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(200,185,165,0.8);
+  z-index: 7;
+  pointer-events: none;
+}
+
+/* --- ANCHOR TARGET (invisible scroll destination) --- */
+.anchor-target {
+  display: block;
+  position: absolute;
+  top: calc(-1 * var(--nav-h) - 16px);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* --- NAV --- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(20px, 5vw, 60px);
+  background: var(--cream);
+  border-bottom: 1.5px solid var(--cream2);
+  z-index: 100;
+  transition: box-shadow .3s;
+}
+.nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.08); }
+/* item 3: text logo */
+.nav-logo-text {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1410;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-decoration: none;
+}
+.logo-afro { color: var(--coral); }
+.footer-logo-text { color: var(--cream); font-size: 26px; }
+.footer-logo-text .logo-afro { color: var(--yellow); }
+.nav-links {
+  display: flex; align-items: center; gap: 36px;
+}
+.nav-link {
+  font-size: 15px; font-weight: 500;
+  color: var(--ink); opacity: .7;
+  transition: opacity .2s, font-weight .1s;
+}
+.nav-link:hover { opacity: 1; }
+.nav-link.active { opacity: 1; font-weight: 700; }
+.nav-cta {
+  background: transparent;
+  color: rgba(26,20,16,.45);
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1px solid rgba(26,20,16,.2);
+  font-size: 14px; font-weight: 500;
+  transition: background .2s, color .2s, border-color .2s, transform .15s;
+}
+.nav-cta:hover {
+  background: var(--coral);
+  color: #fff;
+  border-color: var(--coral);
+  transform: translateY(-1px);
+}
+.nav-cta.active {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: transparent;
+}
+.nav-burger { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
+.nav-burger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .2s; }
+
+/* --- MOBILE MENU --- */
+.mobile-menu {
+  display: none;
+  position: fixed; inset: 0; top: var(--nav-h);
+  background: var(--cream);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 32px;
+  z-index: 99;
+}
+.mobile-menu.open { display: flex; }
+.mobile-link { font-family: var(--font-display); font-size: 36px; }
+
+/* --- HERO --- */
+/* ==============================================
+   HERO — SPLIT REVEAL ANIMATION
+   ==============================================
+   Initial state: video 100% wide, left panel
+   width: 0 / overflow: hidden.
+   JS adds classes to drive the sequence.
+   .hero-settled = final resting state.
+   Mobile (<768px) skips straight to settled.
+   ============================================== */
+
+.hero {
+  min-height: 100vh;
+  display: flex;           /* flex so we can animate panel widths */
+  padding-top: var(--nav-h);
+  overflow: hidden;        /* clip panels during animation */
+}
+
+/* ---------- LEFT PANEL ---------- */
+.hero-left {
+  flex: 0 0 auto;
+  width: 0;                /* collapsed: video fills 100% */
+  overflow: hidden;
+  min-width: 0;
+  will-change: width;
+  position: relative;
+  /* transition added only when splitting */
+}
+
+/* Inner wrapper: always sized to the final 50% column width so
+   content never reflows. Carries padding that the outer can't
+   have while width: 0 (border-box would fight it).
+   overflow: hidden clips the eraser mask so it can't bleed
+   into the video panel during the headline erase animation. */
+.hero-left-inner {
+  width: 50vw;
+  min-width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(40px, 6vw, 80px) clamp(24px, 5vw, 72px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Text children: hidden until the reveal fires.
+   Each gets opacity 0 + slight upward offset.
+   Scoped to non-settled hero so settled state
+   never re-hides them. */
+.hero:not(.hero-settled) .reveal-child {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* ---------- RIGHT PANEL ---------- */
+.hero-right {
+  flex: 1 1 100%;          /* takes all available space initially */
+  min-width: 0;
+  will-change: width;
+  /* transition added only when splitting */
+}
+
+/* ---------- SPLITTING STATE (JS adds these) ---------- */
+.hero-left.is-splitting {
+  width: 50%;
+  transition: width 800ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+.hero-right.is-splitting {
+  flex: 0 0 auto;
+  width: 50%;
+  transition: width 800ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ---------- TEXT STAGGER (JS adds .text-in to hero-left) ---------- */
+.hero-left.text-in .reveal-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger delays — nth-child maps to: eyebrow, h1, sub, actions, doodle */
+.hero-left.text-in .reveal-child:nth-child(1) {
+  transition: opacity 400ms ease 0ms, transform 400ms ease 0ms;
+}
+.hero-left.text-in .reveal-child:nth-child(2) {
+  transition: opacity 400ms ease 150ms, transform 400ms ease 150ms;
+}
+.hero-left.text-in .reveal-child:nth-child(3) {
+  transition: opacity 400ms ease 300ms, transform 400ms ease 300ms;
+}
+.hero-left.text-in .reveal-child:nth-child(4) {
+  transition: opacity 400ms ease 450ms, transform 400ms ease 450ms;
+}
+.hero-left.text-in .reveal-child:nth-child(5) {
+  transition: opacity 400ms ease 560ms, transform 400ms ease 560ms;
+}
+
+/* ---------- SETTLED STATE (JS adds .hero-settled to .hero) ----------
+   Clean, no animation, standard split — same as the old grid.
+   overflow: hidden keeps the eraser mask from bleeding into
+   the video panel; eraser now sits ON the text so it stays in-bounds. */
+.hero.hero-settled .hero-left {
+  width: 50%;
+  overflow: hidden;
+  will-change: auto;
+  transition: none;
+}
+.hero.hero-settled .hero-right {
+  flex: 0 0 auto;
+  width: 50%;
+  will-change: auto;
+  transition: none;
+}
+.hero.hero-settled .reveal-child {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ---------- HINT: pulsing opacity in initial state ---------- */
+.video-overlay-text {
+  animation: hintPulse 2.4s ease-in-out infinite;
+}
+.video-overlay-text.hint-out {
+  animation: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+@keyframes hintPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+/* ---------- TYPOGRAPHY (unchanged) ---------- */
+.hero-eyebrow {
+  font-size: 13px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--coral);
+  margin-bottom: 16px;
+}
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 7vw, 88px);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.accent-coral { color: var(--coral); }
+.accent-purple { color: var(--purple); }
+.accent-teal   { color: var(--teal); }
+
+.hero-sub {
+  font-size: clamp(15px, 1.4vw, 18px);
+  color: var(--ink); opacity: .75;
+  max-width: 400px;
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* Buttons */
+.btn-primary {
+  background: var(--coral);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 15px; font-weight: 500;
+  transition: transform .15s, background .2s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(232,93,38,.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(232,93,38,.4); }
+
+.btn-ghost {
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  padding: 13px 28px;
+  border-radius: 100px;
+  font-size: 15px; font-weight: 500;
+  transition: transform .15s, background .2s;
+}
+.btn-ghost:hover { background: var(--ink); color: var(--cream); transform: translateY(-2px); }
+
+.btn-outline {
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 15px; font-weight: 500;
+  transition: transform .15s, background .2s;
+  display: inline-block;
+}
+.btn-outline:hover { background: var(--ink); color: var(--cream); transform: translateY(-2px); }
+
+.btn-yellow {
+  background: var(--yellow);
+  color: var(--ink);
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 15px; font-weight: 600;
+  transition: transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(255,229,102,.4);
+}
+.btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,229,102,.6); }
+
+.btn-ghost-light {
+  border: 1.5px solid rgba(255,255,255,.4);
+  color: rgba(255,255,255,.85);
+  padding: 13px 28px;
+  border-radius: 100px;
+  font-size: 15px; font-weight: 500;
+  transition: transform .15s, background .2s;
+}
+.btn-ghost-light:hover { background: rgba(255,255,255,.1); transform: translateY(-2px); }
+
+/* polaroid removed — hero video fills the panel cleanly */
+
+/* HERO RIGHT — video panel */
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+.hero-video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* fix 3: scanline overlay — repeating horizontal rules at 0.03 opacity */
+.video-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.03) 3px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+
+/* fix 3: hover process reveal — bottom left */
+.video-process-reveal {
+  position: absolute;
+  bottom: 56px;          /* sits above the "hello" pill */
+  left: 16px;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+.hero-right:hover .video-process-reveal {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+.video-process-reveal span {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: #fff;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  padding: 4px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+/* "go on then" hint pill */
+.video-overlay-text {
+  position: absolute; bottom: 18px; left: 16px;
+  z-index: 3;
+  background: rgba(255,255,255,.9);
+  padding: 6px 16px;
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+  transition: opacity 300ms ease;
+}
+.video-overlay-text .handwritten {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink);
+}
+/* hide hint when replay is visible */
+.video-overlay-text.hint-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Replay button ---- */
+.video-replay {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+.video-replay.replay-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.replay-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(245,240,232,0.9);
+  border: 1.5px solid rgba(26,20,16,0.15);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #1a1410;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.replay-btn:hover {
+  background: rgba(232,93,38,0.1);
+  border-color: var(--coral);
+  color: var(--coral);
+  transform: scale(1.08);
+}
+.replay-label {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: rgba(26,20,16,0.5);
+  line-height: 1;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .video-replay { display: none; }
+}
+
+/* --- REEL STRIP --- */
+/* The section IS the flex row — no inner wrapper needed.
+   Dividers are on the section only, at reduced opacity so
+   they can't be mistaken for black bars. */
+.reel {
+  /* layout */
+  display: flex;
+  align-items: stretch;
+  height: 420px;
+  /* containment */
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+  /* appearance */
+  background: #1a1410;
+  border-top:    1px solid rgba(200,240,96,0.04);
+  border-bottom: 1px solid rgba(200,240,96,0.04);
+  /* scroll-reveal start state */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease-out, transform 600ms ease-out;
+}
+.reel.reel-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* .reel-inner is no longer needed but kept in HTML harmlessly —
+   make it a transparent pass-through that doesn't affect layout */
+.reel-inner {
+  display: contents;
+}
+
+.reel-clip {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: #000;
+  display: flex;
+  align-items: center;
+}
+.reel-clip video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: none;
+  vertical-align: bottom;
+  max-width: none;
+  max-height: none;
+  transition: filter 300ms ease;
+}
+.reel-clip:hover video {
+  filter: brightness(1.12);
+}
+
+@media (max-width: 768px) {
+  .reel { height: 260px; }
+  .reel-clip--desktop { display: none; }
+}
+
+/* --- TICKER --- */
+/*
+ * Seamless infinite scroll: two identical .ticker-set divs side by side.
+ * Each set has padding-right equal to the internal gap, making the sets
+ * self-contained — total track = exactly 2 × set width.
+ * Animating -50% moves exactly one set, then loops invisibly.
+ */
+.ticker-wrap {
+  background: var(--ink);
+  overflow: hidden;
+  padding: 14px 0;
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 30s linear infinite;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-set {
+  display: flex;
+  gap: 32px;
+  padding-right: 32px; /* trailing gap makes both sets exactly equal width */
+}
+.ticker-set span {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--cream);
+  white-space: nowrap;
+}
+.ticker-dot { color: var(--coral) !important; }
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* --- SECTION COMMONS --- */
+section { padding: clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px); }
+.section-header { text-align: center; margin-bottom: clamp(40px, 5vw, 64px); }
+.section-tag {
+  display: inline-block;
+  font-size: 12px; font-weight: 600; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--coral);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 60px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 17px; color: var(--ink); opacity: .65;
+  max-width: 540px; margin: 0 auto;
+  font-weight: 300;
+}
+
+/* --- LAB --- */
+.lab { background: var(--cream); }
+
+/* scroll hint removed — grid layout doesn't need it */
+.lab-scroll-hint { display: none; }
+
+/* 3-column grid */
+.lab-scroll {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 0 32px;
+}
+
+/* card-link wrapper */
+.lab-card-link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+/* Base card — rotations applied per-nth-child so they're
+   predictable regardless of the --tilt custom prop */
+.lab-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s;
+  cursor: pointer;
+}
+.lab-card:nth-child(1) { transform: rotate(-0.8deg); }
+.lab-card:nth-child(2) { transform: rotate( 0.5deg); }
+.lab-card:nth-child(3) { transform: rotate(-0.4deg); }
+.lab-card:hover {
+  transform: rotate(0deg) scale(1.02) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,.18);
+}
+.lab-card-img { position: relative; overflow: hidden; aspect-ratio: 4/3; }
+.lab-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.lab-card:hover .lab-card-img img { transform: scale(1.04); }
+.lab-card-tag {
+  position: absolute; top: 12px; left: 12px;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px; font-weight: 600; letter-spacing: .08em;
+}
+.lab-card-body { padding: 24px; }
+.lab-card-body h3 {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.lab-card-body p { font-size: 14px; opacity: .7; line-height: 1.6; margin-bottom: 16px; }
+.lab-link { font-size: 14px; font-weight: 600; color: var(--coral); transition: gap .2s; }
+.lab-link:hover { text-decoration: underline; }
+.lab-more { text-align: center; margin-top: 48px; }
+
+/* Featured lab card — full-width horizontal layout */
+.lab-card--featured {
+  grid-column: 1 / -1;
+  transform: rotate(-0.4deg);
+}
+.lab-card--featured .lab-card-link {
+  flex-direction: row;
+}
+.lab-card--featured .lab-card-img {
+  width: 52%;
+  flex-shrink: 0;
+  aspect-ratio: unset;
+  min-height: 280px;
+}
+.lab-card--featured .lab-card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+}
+.lab-card--featured .lab-card-body h3 { font-size: 32px; }
+.lab-card--featured .lab-card-body p { font-size: 15px; }
+@media (max-width: 680px) {
+  .lab-card--featured .lab-card-link { flex-direction: column; }
+  .lab-card--featured .lab-card-img { width: 100%; min-height: 200px; }
+  .lab-card--featured .lab-card-body { padding: 20px; }
+  .lab-card--featured .lab-card-body h3 { font-size: 24px; }
+}
+
+/* Date tag on lab cards */
+.lab-card-date {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.35;
+  margin-bottom: 8px;
+}
+
+/* Coming-soon card */
+.lab-card--upcoming { opacity: 0.7; }
+.lab-card-img--placeholder {
+  height: 220px;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lab-upcoming-label {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: #fff;
+  opacity: 0.3;
+}
+
+/* --- PORTRAITS --- */
+.portraits-sub {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: rgba(26,20,16,0.55);
+  text-align: center;
+  max-width: 580px;
+  margin: 12px auto 0;
+}
+.portrait-subcaption {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: rgba(26,20,16,0.4);
+  text-align: center;
+  max-width: 200px;
+}
+.portraits {
+  background: var(--cream2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Carousel wrapper ---- */
+.portrait-scroll-wrap {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+.portrait-strip {
+  display: flex;
+  gap: 28px;
+  padding: 20px 48px 40px;
+  /* JS drives translateX — no scroll */
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* ---- Carousel arrows ---- */
+.portrait-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(245,240,232,0.9);
+  border: 1px solid rgba(26,20,16,0.12);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #1a1410;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, opacity 0.3s;
+  line-height: 1;
+}
+.portrait-nav--prev { left: 16px; }
+.portrait-nav--next { right: 16px; }
+.portrait-nav:hover {
+  background: rgba(232,93,38,0.1);
+  border-color: var(--coral);
+  color: var(--coral);
+}
+.portrait-nav.nav-faded {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Individual card ---- */
+.portrait-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transform: rotate(var(--tilt));
+  transition: transform .3s;
+}
+/* Un-tilt on hover — only for non-flip cards */
+.portrait-item:hover { transform: rotate(0deg); }
+
+/* ---- Standard (non-flip) print — Cheryl ---- */
+.portrait-print {
+  background: #fff;
+  padding: 8px 8px 32px;
+  box-shadow: var(--shadow-card);
+  border-radius: 2px;
+  width: 220px;
+}
+.portrait-print img { width: 100%; height: 240px; object-fit: cover; }
+.dark-print { background: var(--dark2); }
+.portrait-caption {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--ink); opacity: .75;
+  text-align: center;
+  max-width: 220px;
+}
+
+/* ---- Flip card (AI characters) ---- */
+.portrait-item--flip:hover {
+  /* Keep tilt while flipping — don't un-rotate */
+  transform: rotate(var(--tilt));
+}
+.portrait-card {
+  position: relative;
+  width: 220px;
+  /* Matches the Cheryl polaroid print exactly:
+     border-box 220px wide, 8px top + 240px img + 32px bottom = 280px */
+  height: 280px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.portrait-item--flip:hover .portrait-card {
+  transform: rotateY(180deg);
+}
+.portrait-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+/* Front: fill the fixed card as a block — no flex gap interference */
+.portrait-face--front {
+  display: block;
+}
+.portrait-face--front .portrait-print {
+  /* Fill the full 220×280px face (border-box).
+     Padding 8+8 sides, 8 top, 32 bottom → content area 204×240px — matches Cheryl exactly. */
+  width: 100%;
+  height: 100%;
+}
+.portrait-face--front .portrait-print img {
+  /* Override the generic fixed 240px — let it fill the content area instead */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Back: cref image + label */
+.portrait-face--back {
+  transform: rotateY(180deg);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+  border-radius: 2px;
+  padding: 8px 8px 12px;
+  justify-content: flex-start;
+  gap: 8px;
+}
+.portrait-cref-img {
+  width: 100%;
+  height: 85%;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+.portrait-cref-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: rgba(26,20,16,0.5);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ---- Video flip cards (all AI characters) ---- */
+/*
+ * Outer wrapper = flex column (card + caption below), same as Cheryl's .portrait-item.
+ * Card fixed to 220×280px — the Cheryl polaroid print dimensions.
+ * Caption sits below as a sibling, just like the non-flip items.
+ */
+.portrait-item--vidflip {
+  perspective: 800px;
+  /* Keep tilt on hover — do NOT un-rotate to 0 */
+  transform: rotate(var(--tilt));
+}
+.portrait-item--vidflip:hover {
+  transform: rotate(var(--tilt));
+}
+.portrait-item--vidflip:hover .portrait-card {
+  transform: rotateY(180deg);
+}
+
+/* Back face — video version
+ * The face is already position:absolute; inset:0 (220×280px from .portrait-face).
+ * Children use absolute positioning so video intrinsic size can never
+ * push the container open.
+ */
+.portrait-back--video {
+  transform: rotateY(180deg);
+  background: #0d0d0b;
+  box-shadow: var(--shadow-card);
+  border-radius: 2px;
+  overflow: hidden;
+  /* Override the flex layout inherited from .portrait-face — use relative
+     so absolutely-positioned children resolve against this box */
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+.portrait-vid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+
+/* --- THOUGHTS --- */
+.thoughts { background: var(--cream); }
+.thoughts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.sticky-note {
+  background: var(--note-bg, #FFE566);
+  padding: 28px 24px 20px;
+  border-radius: 2px;
+  box-shadow: 4px 4px 20px rgba(0,0,0,.1), -1px -1px 0 rgba(0,0,0,.04);
+  transform: rotate(var(--tilt));
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+  cursor: pointer;
+  position: relative;
+}
+.sticky-note::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 48px; height: 6px;
+  background: rgba(0,0,0,.08);
+  border-radius: 0 0 4px 4px;
+}
+.sticky-note:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow: 6px 8px 28px rgba(0,0,0,.14);
+}
+.sticky-tag {
+  font-size: 11px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink); opacity: .5;
+  margin-bottom: 12px;
+}
+.sticky-note h3 {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 700;
+  color: var(--ink); line-height: 1.2;
+  margin-bottom: 12px;
+}
+.sticky-note p { font-size: 14px; opacity: .75; line-height: 1.6; }
+.sticky-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 20px;
+  border-top: 1px solid rgba(0,0,0,.08);
+  padding-top: 12px;
+}
+.sticky-date { font-size: 14px; opacity: .5; }
+.sticky-read { font-size: 13px; font-weight: 600; opacity: .6; transition: opacity .2s; }
+.sticky-read:hover { opacity: 1; }
+.thoughts-more { text-align: center; margin-top: 48px; }
+
+/* --- ABOUT (dark) --- */
+.about {
+  background: var(--dark);
+  color: var(--cream);
+  padding: clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px);
+}
+.about-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+}
+.about .section-tag { color: var(--yellow); }
+.about-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 700; line-height: 1.1;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+.about-body {
+  font-size: clamp(15px, 1.3vw, 17px);
+  color: rgba(245,240,232,.75);
+  font-weight: 300; line-height: 1.75;
+  margin-bottom: 20px;
+}
+.about-body em { color: var(--yellow); font-style: normal; }
+.about-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 32px; }
+.about-photo-wrap {
+  position: relative;
+  display: inline-block;
+}
+.about-photo-wrap img {
+  width: 100%; max-width: 440px;
+  border-radius: 4px;
+  filter: grayscale(20%) contrast(1.05);
+}
+.about-photo-label {
+  position: absolute; bottom: -16px; right: -16px;
+  background: var(--yellow);
+  color: var(--ink);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  transform: rotate(-2deg);
+  box-shadow: var(--shadow);
+}
+
+/* --- CONNECT SECTION --- */
+.connect {
+  background: var(--cream);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.connect-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.connect-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 9vw, 96px);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.connect-copy {
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink);
+  opacity: 0.75;
+  max-width: 480px;
+  margin: 0 auto 40px;
+}
+.connect-pills {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn-connect-pill {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 100px;
+  border: 2px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.btn-connect-pill:hover {
+  background: var(--coral);
+  color: #fff;
+  border-color: var(--coral);
+  transform: translateY(-2px);
+}
+/* Doodle positioned right of copy */
+.connect #doodle-connect {
+  position: absolute;
+  right: clamp(0px, 4vw, 60px);
+  bottom: 0;
+  height: 160px;
+  pointer-events: none;
+}
+
+/* --- FOOTER --- */
+.footer {
+  background: var(--dark2);
+  color: var(--cream);
+  padding: 48px clamp(24px, 6vw, 80px);
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; flex-wrap: wrap;
+  justify-content: space-between; align-items: center;
+  gap: 24px;
+}
+.footer-logo img { height: 28px; filter: brightness(10); }
+.footer-tagline {
+  font-family: var(--font-display);
+  font-size: 16px; color: rgba(245,240,232,.5);
+  margin-top: 6px;
+}
+.footer-nav { display: flex; gap: 28px; flex-wrap: wrap; }
+.footer-nav a { font-size: 14px; opacity: .55; transition: opacity .2s; }
+.footer-nav a:hover { opacity: 1; }
+.footer-copy { font-size: 13px; opacity: .35; width: 100%; text-align: center; }
+
+/* --- HANDWRITTEN --- */
+.handwritten { font-family: var(--font-display); }
+
+/* --- DRIFT-IN (scroll reveal) --- */
+.drift-in {
+  opacity: 0;
+  transform: rotate(var(--tilt, 0deg)) translateY(40px);
+  transition: opacity .6s ease calc(var(--delay, 0s)), transform .6s cubic-bezier(.34,1.2,.64,1) calc(var(--delay, 0s));
+}
+.drift-in.visible {
+  opacity: 1;
+  transform: rotate(var(--tilt, 0deg)) translateY(0);
+}
+
+/* ==============================================
+   INNER PAGE SHARED STYLES
+   (thoughts posts, experiment pages, lab index)
+   ============================================== */
+
+/* item 2: back-arrow nav link on inner pages */
+.nav-back {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--coral);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap .15s;
+  white-space: nowrap;
+}
+.nav-back:hover { gap: 8px; }
+
+/* item 8: post article layout */
+.post-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 40px);
+  padding-top: calc(var(--nav-h) + clamp(40px, 5vw, 72px));
+}
+.post-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 12px;
+}
+.post-meta {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.post-date,
+.post-reading-time {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--ink);
+  opacity: 0.5;
+}
+.post-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.post-body {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--ink);
+  font-weight: 300;
+}
+.post-body p { margin-bottom: 24px; }
+.post-body h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 40px 0 16px;
+}
+.post-body em { font-style: italic; color: var(--coral); font-style: normal; font-weight: 400; }
+.post-body h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 32px 0 12px;
+}
+.post-share {
+  margin: 32px 0;
+  padding-top: 32px;
+  border-top: 1px solid rgba(26,20,16,.08);
+}
+.post-share-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: rgba(26,20,16,.4);
+  margin-bottom: 12px;
+}
+.post-share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.post-share-btn {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(26,20,16,.2);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: border-color .2s, color .2s;
+}
+.post-share-btn:hover { border-color: var(--coral); color: var(--coral); }
+.post-share-convo {
+  display: block;
+  font-size: 13px;
+  color: rgba(26,20,16,.5);
+  text-decoration: none;
+  transition: color .2s;
+}
+.post-share-convo:hover { color: var(--coral); }
+.post-body blockquote {
+  border-left: 3px solid var(--coral);
+  padding-left: 20px;
+  margin: 32px 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--ink);
+  opacity: 0.8;
+}
+.post-prompt {
+  background: #EDE7DC;
+  border-left: 3px solid var(--coral);
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin: 32px 0;
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink);
+  opacity: 0.85;
+}
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(26,20,16,.1);
+}
+.post-tag {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: var(--cream2);
+  color: var(--ink);
+  opacity: 0.7;
+}
+
+/* item 9/11: experiment page layout */
+.exp-wrap {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 40px);
+  padding-top: calc(var(--nav-h) + 40px);
+}
+.exp-number {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  opacity: 0.08;
+  letter-spacing: -0.03em;
+  margin-bottom: -32px;
+}
+.exp-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.exp-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 32px 0;
+}
+.exp-tool-pill {
+  background: var(--cream2);
+  border: 1px solid rgba(44,38,32,.15);
+  color: var(--ink);
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.exp-media {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--dark2);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.exp-media video,
+.exp-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.exp-media-placeholder {
+  color: rgba(255,255,255,.3);
+  font-family: var(--font-display);
+  font-size: 20px;
+  text-align: center;
+}
+.exp-section {
+  margin-bottom: 40px;
+}
+.exp-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 12px;
+}
+.exp-section h3 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.exp-section p {
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.exp-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--cream2);
+  margin-top: 64px;
+  padding-top: 24px;
+}
+.exp-nav a {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--coral);
+  transition: opacity .2s;
+}
+.exp-nav a:hover { opacity: 0.7; }
+
+/* Experiment page extras */
+.exp-desc {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.6;
+  margin-bottom: 32px;
+  font-weight: 300;
+}
+.exp-tool-date {
+  background: var(--ink) !important;
+  color: #fff !important;
+  border-color: var(--ink) !important;
+  opacity: 0.5;
+}
+.exp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.exp-list li {
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 300;
+  padding: 10px 0 10px 24px;
+  border-bottom: 1px solid rgba(26,20,16,0.07);
+  position: relative;
+}
+.exp-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--coral);
+  font-weight: 600;
+}
+.exp-phase {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: var(--ink);
+}
+.exp-video-label {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+
+/* Lab index grid */
+.lab-index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  /* Mobile: skip animation entirely — show stacked layout immediately.
+     JS also checks this breakpoint and jumps to settled state. */
+  .hero {
+    flex-direction: column;
+    min-height: auto;
+    overflow: visible;
+  }
+  .hero-left,
+  .hero.hero-settled .hero-left {
+    width: 100% !important;
+    overflow: visible !important;
+    order: 2;
+    will-change: auto;
+    transition: none !important;
+  }
+  .hero-left-inner {
+    width: 100% !important;
+    min-width: 0;
+    padding: 40px 24px;
+  }
+  .hero-right,
+  .hero.hero-settled .hero-right {
+    width: 100% !important;
+    flex: none !important;
+    height: 50vw;
+    min-height: 280px;
+    order: 1;
+    will-change: auto;
+    transition: none !important;
+  }
+  /* Always show text on mobile — no animation hiding */
+  .hero:not(.hero-settled) .reveal-child {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .video-overlay-text { animation: none; }
+  .float-prints { display: none; }
+  .about-inner { grid-template-columns: 1fr; }
+  .about-image { order: -1; text-align: center; }
+  .about-photo-wrap img { max-width: 320px; }
+}
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .portrait-strip { padding: 20px 16px 40px; }
+  .portrait-print { width: 160px; }
+  .portrait-print img { height: 180px; }
+  /* Mobile card: 8px top + 180px img + 32px bottom = 220px (border-box) */
+  .portrait-card { width: 160px; height: 220px; }
+  .portrait-caption { max-width: 160px; font-size: 14px; }
+  /* Mobile arrows — smaller, anchored to bottom of strip, not vertically centred */
+  .portrait-nav {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+    top: auto;
+    bottom: 8px;
+    transform: none;
+  }
+  /* Disable flip on touch screens — just show portrait */
+  .portrait-item--vidflip:hover .portrait-card { transform: none; }
+}

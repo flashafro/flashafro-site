@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/js/cookie-consent.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompting for emotion — FlashAfro</title>
+  <meta name="description" content="Describing a scene gets you surfaces. Describing a feeling gets you something with interior life. How I changed the way I prompt for character work." />
+  <link rel="icon" href="../assets/images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- DOODLES in page margins (fixed, wide-screen only) -->
+  <img class="doodle-element doodle-coral post-doodle-1"
+       src="../assets/doodles/cheryl-laughing.png" alt="" aria-hidden="true" />
+  <img class="doodle-element doodle-purple post-doodle-2"
+       src="../assets/doodles/cheryl-thinking.png" alt="" aria-hidden="true" />
+  <img class="doodle-element doodle-teal post-doodle-3"
+       src="../assets/doodles/cheryl-delighted.png" alt="" aria-hidden="true" />
+
+  <!-- NAV with back arrow -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-back">← thoughts</a>
+    <a href="../index.html" data-nav-href="index.html" class="nav-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+    <ul class="nav-links">
+      <li><a href="../index.html" data-nav-href="index.html" class="nav-link magnetic">Home</a></li>
+      <li><a href="../index.html#lab"      data-nav-href="index.html#lab"      class="nav-link magnetic">The Lab</a></li>
+      <li><a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="nav-link magnetic">Thoughts</a></li>
+      <li><a href="../index.html#about"    data-nav-href="index.html#about"    class="nav-link magnetic">About</a></li>
+      <li><a href="../index.html#connect"  data-nav-href="index.html#connect"  class="nav-cta magnetic">Connect</a></li>
+    </ul>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html" data-nav-href="index.html" class="mobile-link">Home</a>
+    <a href="../index.html#lab"      data-nav-href="index.html#lab"      class="mobile-link">The Lab</a>
+    <a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="mobile-link">Thoughts</a>
+    <a href="../index.html#about"    data-nav-href="index.html#about"    class="mobile-link">About</a>
+    <a href="../index.html#connect"  data-nav-href="index.html#connect"  class="mobile-link">Connect</a>
+  </div>
+
+  <main class="post-wrap">
+
+    <div class="post-eyebrow">Prompt craft</div>
+    <h1 class="post-title">Prompting for emotion</h1>
+    <div class="post-meta">
+      <span class="post-date handwritten">June 2026</span>
+      <span class="post-reading-time">5 min read</span>
+    </div>
+
+    <div class="post-body">
+
+      <p>When I started experimenting with AI character work, I did what most people do. I described what I wanted to see. The scene. The props. The lighting. The clothes. I treated the model like a fast illustrator who needed a brief.</p>
+
+      <p>The results were technically correct and completely lifeless.</p>
+
+      <p>A character standing in a rain-slicked alley, leather jacket, moody lighting. Sure. But no tension. No sense that this person has somewhere to be or someone they're running from. Just a well-executed mood board image of a concept.</p>
+
+      <p>The shift happened almost by accident. I was generating frames for Ethan, one of the AI characters I'd been building, and I was frustrated. I'd described him exhaustively. Every physical detail locked down. But something kept slipping. He looked right but didn't feel like himself.</p>
+
+      <p>Out of impatience more than strategy, I rewrote the prompt. Instead of "man in leather jacket, standing in rain, dark alley, cinematic lighting," I wrote: "a man who has just made a decision he can't take back, standing in the rain, the weight of it still settling."</p>
+
+      <p>The difference was immediate. Not just in one image but in the whole feel of the outputs. The posture changed. The expression shifted. The lighting choices the model made felt considered in a way they hadn't before.</p>
+
+      <blockquote>Describing what a thing looks like gets you surfaces. Describing what it feels like gets you something with interior life.</blockquote>
+
+      <h2>The Suppression Theory experiment</h2>
+
+      <p>This led me to something more deliberate. I started testing known psychological frameworks as prompting tools, specifically James Gross's Suppression Theory. The idea that suppressed emotion reads differently in the body than expressed emotion. Someone trying not to cry looks different to someone crying. That tension is visible. And it turns out AI models respond to that distinction when you describe the internal state rather than the external appearance.</p>
+
+      <p>I built a test around Ethan delivering one line in an interrogation room: "I've been waiting for you."</p>
+
+      <p>The Kling prompt read:</p>
+
+      <div class="post-prompt">"Sparse room, single overhead light, deep shadows at the edges. Medium close-up. Ethan seated in a chair, facing camera. Completely still, spine straight, hands in his lap. His expression is controlled and unreadable, not cold, but contained. The quality of his stillness suggests effort rather than ease. His chest rises and falls with one slow deliberate breath. His eyes hold the camera without looking away. After a long beat he speaks quietly: 'I've been waiting for you.' The words delivered without urgency or threat. Simply a statement of fact that has cost something to say."</div>
+
+      <p>The results from Kling were genuinely interesting. The pre-line beat had real weight. The stillness read as suppression rather than blankness.</p>
+
+      <h2>When the model gets it wrong</h2>
+
+      <p>Then I ran the same prompt in Seedance 2.0.</p>
+
+      <p>I got an NSFW flag.</p>
+
+      <p>"Output may contain sensitive content."</p>
+
+      <p>Which is a perfect illustration of exactly the problem. The model wasn't reading psychological subtext. It was pattern matching surface signals. Interrogation room plus intense man plus "I've been waiting for you" equals flagged content. It had no framework for understanding that the context was a character study in emotional suppression.</p>
+
+      <p>The content filter responded to the ingredients, not the intention.</p>
+
+      <p>I rewrote the prompt with softer language, removing the interrogation room framing and anything that could read as confrontational:</p>
+
+      <div class="post-prompt">"Sparse room, single overhead light. Medium close-up. Ethan seated in a chair. Completely still. His expression controlled and contained. The quality of his stillness suggests effort. He speaks quietly after a long beat: 'I've been waiting for you.' Delivered as a simple statement of fact."</div>
+
+      <p>That version went through without a flag. Same psychological direction. Same emotional instruction. Just without the environmental cues the filter was reacting to.</p>
+
+      <p>The lesson: content moderation works on surface pattern matching. Your emotional prompting needs to account for that layer too.</p>
+
+      <h2>Which models actually do this well</h2>
+
+      <p>Not all models respond to emotional prompting equally. In my testing, Kling and Seedance 2.0 handle psychological and emotional direction significantly better than Google Veo or Omni. The latter tend to default to more literal interpretations of whatever language you use, which makes suppression and micro-expression work harder to achieve.</p>
+
+      <p>If you want to test this approach, start with Kling or Seedance. You will get more interesting results faster, which makes the iteration process worth doing.</p>
+
+      <h2>How I structure prompts now</h2>
+
+      <p>My prompts usually have two distinct zones.</p>
+
+      <p>The first is the identity block. Consistent physical details, the things that make this character unmistakably themselves. This stays fairly stable across generations.</p>
+
+      <p>The second is the moment. An emotional state or situational feeling specific to this image. This changes with every prompt. And that is where the character actually lives.</p>
+
+      <p>Emotion as a prompting structure is not a magic solution. Lean too hard on it and you lose consistency, because the model starts reinterpreting physical details through the emotional lens. Balance is the real craft. And this approach works better for some generation tasks than others.</p>
+
+      <p>But for character work, micro-expressions, and scenes where the feeling in the room matters as much as what is happening in it, starting from emotion rather than description consistently produces more interesting results.</p>
+
+      <p>It is a useful tool. Not the only one.</p>
+
+      <div class="post-tags">
+        <span class="post-tag">prompt craft</span>
+        <span class="post-tag">character design</span>
+        <span class="post-tag">AI filmmaking</span>
+        <span class="post-tag">Kling</span>
+        <span class="post-tag">Seedance</span>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <a href="../index.html" data-nav-href="index.html" class="nav-logo-text footer-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+        <p class="footer-tagline handwritten">making 'things' with AI ✦</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="../index.html" data-nav-href="index.html">Home</a>
+        <a href="../index.html#lab"      data-nav-href="index.html#lab">The Lab</a>
+        <a href="../index.html#thoughts" data-nav-href="index.html#thoughts">Thoughts</a>
+        <a href="../index.html#about"    data-nav-href="index.html#about">About</a>
+        <a href="../index.html#connect"  data-nav-href="index.html#connect">Connect</a>
+      </nav>
+      <p class="footer-copy">© 2026 Cheryl Harris / FlashAfro.com Made with curiosity.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/nav-paths.js"></script>
+  <script src="../assets/js/cursor.js"></script>
+  <script src="../assets/js/nav-active.js"></script>
+  <script src="../assets/js/post-share.js"></script>
+  <script src="../main.js"></script>
+  <style>
+    .post-doodle-1 {
+      position: fixed; top: 28vh; right: 20px;
+      height: 110px; width: auto;
+      --doodle-rot: 6deg; --doodle-delay: 0.4s;
+    }
+    .post-doodle-2 {
+      position: fixed; top: 58vh; left: 12px;
+      height: 120px; width: auto;
+      --doodle-rot: -5deg; --doodle-delay: 0.6s;
+    }
+    .post-doodle-3 {
+      position: fixed; bottom: 18vh; right: 28px;
+      height: 100px; width: auto;
+      --doodle-rot: 4deg; --doodle-delay: 0.8s;
+    }
+    @media (max-width: 1080px) {
+      .post-doodle-1, .post-doodle-2, .post-doodle-3 { display: none; }
+    }
+  </style>
+</body>
+</html>
