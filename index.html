@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://player.vimeo.com/api/player.js"></script>
 </head>
 <body>
 
@@ -74,9 +75,6 @@
           <a href="#about" class="btn-ghost magnetic">Who's Cheryl?</a>
         </div>
 
-        <!-- DOODLE: skeptical — lower-right of hero-left-inner -->
-        <img class="doodle-element doodle-purple reveal-child" id="doodle-skeptical"
-             src="assets/doodles/cheryl-skeptical.png" alt="" aria-hidden="true" />
       </div>
     </div>
 
@@ -560,5 +558,18 @@
   <script src="assets/js/cursor.js"></script>
   <script src="assets/js/nav-active.js"></script>
   <script src="main.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var iframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
+    iframes.forEach(function (iframe) {
+      var player = new Vimeo.Player(iframe);
+      player.on('ended', function () {
+        player.setCurrentTime(0).then(function () {
+          player.pause();
+        });
+      });
+    });
+  });
+  </script>
 </body>
 </html>

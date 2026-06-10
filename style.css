@@ -70,20 +70,6 @@
 
 /* ---- Per-doodle rules ---- */
 
-/* skeptical: lower-right of .hero-left-inner.
-   hero-left-inner has overflow:hidden so the doodle is fully
-   contained within the left text panel and can never bleed into
-   the video panel. right: 0 aligns to the inner panel's padding edge. */
-#doodle-skeptical {
-  position: absolute;
-  bottom: 32px;
-  right: 0;
-  height: 120px;
-  width: auto;
-  z-index: 2;
-  --doodle-rot: 8deg;
-  --doodle-delay: 0.4s;
-}
 
 /* tongue: bottom-left of the lab grid — fully clear of other elements */
 #doodle-tongue {

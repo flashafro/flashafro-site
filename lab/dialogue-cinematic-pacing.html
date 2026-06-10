@@ -11,6 +11,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* ── Character image lightbox ── */
+    .lb-trigger { position:relative; cursor:zoom-in; }
+    .lb-trigger img { transition:transform 0.2s ease; display:block; }
+    .lb-trigger:hover img { transform:scale(1.03); }
+    .lb-hint { position:absolute; inset:0; background:rgba(0,0,0,0.38); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s ease; pointer-events:none; border-radius:0; }
+    .lb-trigger:hover .lb-hint { opacity:1; }
+    .lb-hint span { font-family:'Caveat', cursive; font-size:15px; color:#fff; letter-spacing:0.02em; }
+    #diaLightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; align-items:center; justify-content:center; flex-direction:column; gap:16px; padding:20px; box-sizing:border-box; }
+    #diaLightbox.lb-open { display:flex !important; }
+    #diaLightbox { cursor:pointer; }
+    #diaLbImg { max-width:90vw; max-height:82vh; object-fit:contain; border-radius:2px; cursor:default; pointer-events:none; }
+    #diaLbCaption { font-family:'Caveat', cursive; font-size:16px; color:#F5F0E8; cursor:default; pointer-events:none; text-align:center; max-width:90vw; margin:0; }
+    #diaLbClose { position:fixed; top:18px; right:24px; font-size:32px; line-height:1; color:#fff; cursor:pointer; background:none; border:none; padding:4px 8px; pointer-events:all; opacity:0.8; }
+    #diaLbClose:hover { opacity:1; }
+  </style>
+  <script src="https://player.vimeo.com/api/player.js"></script>
 </head>
 <body>
 
@@ -57,9 +74,12 @@
     <div class="exp-section">
       <div class="exp-section-label">The Brief</div>
       <h3>What I was testing</h3>
-      <p>This experiment explored whether generative AI tools could support a short narrative sequence with real dialogue rather than purely visual or atmospheric clips.</p>
-      <p>The focus was on building tension, character and atmosphere over time. Every sequence was approached with intent. Who holds power in the frame, where the eye is drawn, and how silence, pacing and proximity shape the dynamic between characters.</p>
-      <p>This became an exploration of restraint as much as capability. Controlled camera movement, lingering close-ups and minimal dialogue to create a slow-burn intensity between Ethan and Rosa. Instead of fast action, the emphasis was on presence. Eye contact. Micro-movements. The kind of tension that builds before anything is said or done.</p>
+      <p>This experiment started as a single short film. It ended up becoming something longer. That was not the plan, but when the first episode did well it made sense to keep going.</p>
+      <p>The premise: two vampire characters, Ethan and Seraphine, are in a gothic library. Seraphine has her sights on Rosa, a human girl she intends to prey on. Ethan intervenes. What follows is a slow-burn dynamic between Ethan and Rosa that the series builds on beyond the first episode.</p>
+      <p>Rosa is the FMC. She is the human drawn into a world she did not ask to be part of, quiet and bookish on the surface, considerably more resilient underneath. Ethan is the MMC. He was designed as a specific kind of character. Think Vampire Diaries crossed with Dante from Devil May Cry. Brooding, sarcastic, magnetically insufferable. He quickly became my favourite character in the whole AI cast roster, which probably explains why I kept making episodes.</p>
+      <p>Seraphine appears in the first part only. She is the catalyst. Cold, precise, dangerous. Her attempt to prey on Rosa is what pulls Ethan into the scene and sets everything else in motion.</p>
+      <p>The technical challenge was significant. This was the first time I had introduced scripted dialogue into an AI-generated sequence. That meant solving for character consistency across multiple scenes, realistic mouth movement during speech, physical interaction between two characters in the same frame, and maintaining the gothic library environment across every shot.</p>
+      <p>Spoiler: not all of those got fully solved. But the failures were as instructive as the successes.</p>
     </div>
 
     <div class="exp-section">
@@ -67,7 +87,7 @@
       <h3 class="exp-video-label">Part 1</h3>
       <div style="padding:56.25% 0 0 0; position:relative; margin-bottom: 40px;">
         <iframe
-          src="https://player.vimeo.com/video/1173826847?badge=0&autopause=0&player_id=0&app_id=58479"
+          src="https://player.vimeo.com/video/1173826847?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&rel=0&controls=1&transparent=0"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
           style="position:absolute;top:0;left:0;width:100%;height:100%;"
@@ -77,7 +97,7 @@
       <h3 class="exp-video-label">Part 2</h3>
       <div style="padding:56.25% 0 0 0; position:relative; margin-bottom: 40px;">
         <iframe
-          src="https://player.vimeo.com/video/1181696189?badge=0&autopause=0&player_id=0&app_id=58479"
+          src="https://player.vimeo.com/video/1181696189?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&rel=0&controls=1&transparent=0"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
           style="position:absolute;top:0;left:0;width:100%;height:100%;"
@@ -87,7 +107,7 @@
       <h3 class="exp-video-label">Part 3</h3>
       <div style="padding:56.25% 0 0 0; position:relative; margin-bottom: 8px;">
         <iframe
-          src="https://player.vimeo.com/video/1200111643?badge=0&autopause=0&player_id=0&app_id=58479"
+          src="https://player.vimeo.com/video/1200111643?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&rel=0&controls=1&transparent=0"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
           style="position:absolute;top:0;left:0;width:100%;height:100%;"
@@ -97,6 +117,63 @@
       <script src="https://player.vimeo.com/api/player.js"></script>
     </div>
 
+    <!-- ── CHARACTERS ── -->
+    <div class="exp-section">
+      <div class="exp-section-label">The Characters</div>
+
+      <!-- Ethan -->
+      <div style="margin-bottom: 48px;">
+        <p style="font-family:var(--font-display); font-size:22px; color:var(--ink); margin:0 0 16px; font-weight:600;">Ethan</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(-1deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/ethan-base-v3.png" alt="Ethan — character portrait"
+                 style="width:100%; display:block; aspect-ratio:3/4; object-fit:cover; object-position:top;" />
+          </div>
+          <div class="lb-trigger" data-src="../assets/images/ethan-character-reference-v4.png" data-caption="Ethan — character reference sheet" style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(0.8deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/ethan-character-reference-v4.png" alt="Ethan — character reference sheet"
+                 style="width:100%; display:block; aspect-ratio:3/4; object-fit:cover; object-position:top;" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+        </div>
+        <p style="font-family:var(--font-body); font-size:14px; color:rgba(26,20,16,0.6); line-height:1.75; margin:0;">Ethan is the MMC. Vampire, centuries old, presents as early thirties. The energy is Vampire Diaries crossed with Dante from Devil May Cry — brooding and sarcastic with an underlying intensity that makes him difficult to ignore. He intervenes when Seraphine targets Rosa, which is how the series begins.</p>
+      </div>
+
+      <!-- Rosa -->
+      <div style="margin-bottom: 48px;">
+        <p style="font-family:var(--font-display); font-size:22px; color:var(--ink); margin:0 0 16px; font-weight:600;">Rosa</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(0.5deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/rosa-portrait.png" alt="Rosa — character portrait"
+                 style="width:100%; display:block; aspect-ratio:3/4; object-fit:cover; object-position:top;" />
+          </div>
+          <div class="lb-trigger" data-src="../assets/images/Rosa-character-reference.png" data-caption="Rosa — character reference sheet" style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(-0.6deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/Rosa-character-reference.png" alt="Rosa — character reference sheet"
+                 style="width:100%; display:block; aspect-ratio:3/4; object-fit:cover; object-position:top;" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+        </div>
+        <p style="font-family:var(--font-body); font-size:14px; color:rgba(26,20,16,0.6); line-height:1.75; margin:0;">Rosa is the FMC. Human, bookish, quietly observant. She does not know what she has walked into when Seraphine targets her in the library. She is the central character the series builds around across all parts.</p>
+      </div>
+
+      <!-- Seraphine -->
+      <div style="margin-bottom: 16px;">
+        <p style="font-family:var(--font-display); font-size:22px; color:var(--ink); margin:0 0 16px; font-weight:600;">Seraphine</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(-0.4deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/seraphine-base.png" alt="Seraphine — character portrait"
+                 style="width:100%; display:block; aspect-ratio:3/4; object-fit:cover; object-position:top;" />
+          </div>
+          <div class="lb-trigger" data-src="../assets/images/seraphine-character-ref.jpg" data-caption="Seraphine — character reference sheet" style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(1deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/seraphine-character-ref.jpg" alt="Seraphine — character reference sheet"
+                 style="width:100%; display:block; aspect-ratio:3/4; object-fit:cover; object-position:top;" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+        </div>
+        <p style="font-family:var(--font-body); font-size:14px; color:rgba(26,20,16,0.6); line-height:1.75; margin:0;">Seraphine appears in Part 1 only. She is the antagonist who sets the story in motion, preying on Rosa in the gothic library before Ethan intervenes. Her role is the catalyst, not the ongoing arc.</p>
+      </div>
+    </div>
+
+    <!-- ── WHAT I TESTED ── -->
     <div class="exp-section">
       <div class="exp-section-label">What I Tested</div>
       <h3>The questions I was asking</h3>
@@ -107,6 +184,84 @@
         <li>Experimenting with camera framing and character blocking to create clearer visual storytelling in action scenes</li>
         <li>Creating consistent characters across multiple scenes using character reference imagery</li>
       </ul>
+    </div>
+
+    <!-- ── FANG CONSISTENCY ── -->
+    <div class="exp-section">
+      <div class="exp-section-label">The Fang Problem</div>
+      <h3>A specific consistency challenge</h3>
+
+      <p>Vampire characters introduce a specific consistency challenge that human characters do not have. Fangs only appear in certain expressions. During neutral shots the mouth is closed. During dialogue or emotional moments it opens, and that is when the model has to decide what the teeth look like.</p>
+      <p>Rosa, as the human character, did not have this problem. Her reference sheet was straightforward and remained consistent throughout. Ethan and Seraphine were a different matter entirely.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin: 28px 0;">
+        <div>
+          <div class="lb-trigger" data-src="../assets/images/ethan-fang.png" data-caption="Ethan — fang expression reference" style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(-0.8deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/ethan-fang.png" alt="Ethan — fang reference"
+                 style="width:100%; display:block; aspect-ratio:4/3; object-fit:cover; object-position:top;" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+          <p style="font-family:var(--font-display); font-size:13px; color:rgba(26,20,16,0.45); margin:8px 0 0; text-align:center;">Ethan — fang expression reference</p>
+        </div>
+        <div>
+          <div class="lb-trigger" data-src="../assets/images/seraphine-base-with teeth.png" data-caption="Seraphine — fang expression reference" style="background:#fff; border:6px solid #fff; border-radius:2px; overflow:hidden; transform:rotate(0.6deg); box-shadow:3px 4px 0 rgba(0,0,0,0.1);">
+            <img src="../assets/images/seraphine-base-with teeth.png" alt="Seraphine — fang reference"
+                 style="width:100%; display:block; aspect-ratio:4/3; object-fit:cover; object-position:top;" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+          <p style="font-family:var(--font-display); font-size:13px; color:rgba(26,20,16,0.45); margin:8px 0 0; text-align:center;">Seraphine — fang expression reference</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WHAT WENT WRONG ── -->
+    <div style="background:#1a1410; border-radius:12px; padding:40px 36px; margin:0 0 40px;">
+      <div class="exp-section-label" style="color:rgba(245,240,232,0.45);">What Went Wrong</div>
+      <h3 style="color:#F5F0E8; margin-top:8px;">The physical interaction problem</h3>
+
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The hardest shots in the sequence were the ones requiring two characters to physically interact.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The context matters here. Before the dragging scene, Ethan has already been toying with Seraphine. He is not threatened by her. The fight, if you can call it that, is entirely one-sided and he knows it. His dialogue during it includes lines like 'ooo you almost got me with that one' and 'are you even trying to hit me.' He is entertained. She is not.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The dragging scene is the conclusion of that dynamic. He grabs her and hauls her away from Rosa with the energy of someone removing a minor inconvenience, delivering the line 'So, what did we learn today Seraphine' as he goes. It is dismissive, slightly theatrical, and completely in character.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">Generating it was a different story. The model understood individual character movement and it understood two characters occupying the same frame. What it could not reliably produce was directed physical force from one character onto another — the specific quality of Ethan grabbing Seraphine with intent and pulling her in a particular direction while she is not cooperating.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">What came back instead ranged from the two of them standing near each other with no contact, to Ethan pushing her from behind like he was operating a mop, to both characters moving independently in completely different directions with no connection between them at all.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:20px;">The irony is that the scene is meant to show Ethan completely in control. The generations made it look like nobody was.</p>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:28px;">Two of the more memorable failed attempts:</p>
+
+      <!-- 2-column failure video grid -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:28px;">
+
+        <div>
+          <p style="font-family:'Caveat', cursive; font-size:16px; color:#FFE566; margin:0 0 10px;">Ethan pushes Seraphine like a mop</p>
+          <div style="padding:56.25% 0 0 0; position:relative; border-radius:6px; overflow:hidden;">
+            <iframe
+              src="https://player.vimeo.com/video/1200256334?badge=0&autopause=0&player_id=0&app_id=58479&controls=1&title=0&byline=0&portrait=0&rel=0&transparent=0"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;"
+              title="Failed attempt — Ethan pushes Seraphine like a mop">
+            </iframe>
+          </div>
+          <p style="font-family:var(--font-body); font-size:12px; color:rgba(245,240,232,0.4); font-style:italic; margin:8px 0 0; line-height:1.6;">The model understood push but not direction or intent. Ethan ends up propelling her from behind with zero dramatic logic.</p>
+        </div>
+
+        <div>
+          <p style="font-family:'Caveat', cursive; font-size:16px; color:#FFE566; margin:0 0 10px;">Ethan walks backwards, Seraphine moves independently</p>
+          <div style="padding:56.25% 0 0 0; position:relative; border-radius:6px; overflow:hidden;">
+            <iframe
+              src="https://player.vimeo.com/video/1200256335?badge=0&autopause=0&player_id=0&app_id=58479&controls=1&title=0&byline=0&portrait=0&rel=0&transparent=0"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;"
+              title="Failed attempt — Ethan walks backwards, Seraphine moves independently">
+            </iframe>
+          </div>
+          <p style="font-family:var(--font-body); font-size:12px; color:rgba(245,240,232,0.4); font-style:italic; margin:8px 0 0; line-height:1.6;">Both characters are moving but they are not connected. The model generated two separate actions in the same frame rather than one directed interaction.</p>
+        </div>
+
+      </div>
+      <script src="https://player.vimeo.com/api/player.js"></script>
+
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:14px; line-height:1.75; margin:0;">Physical character interaction remains one of the harder problems in AI video generation. The model is strong on individual character performance. It struggles when the action requires understanding force, direction and contact between two bodies simultaneously.</p>
     </div>
 
     <div class="exp-section">
@@ -122,14 +277,18 @@
       <div class="exp-section-label">Key Learnings</div>
       <h3>What I took away</h3>
       <p>While AI video still has limitations around precise character movement and interaction, those limitations can be managed through careful planning, reference imagery and iterative prompting.</p>
-      <p>The finished piece served as a proof of concept for a hybrid creative workflow where AI tools support the role of a director, enabling rapid experimentation with visual storytelling, shot composition and sound design.</p>
+      <p>The finished piece proved the concept for a hybrid creative workflow, where AI tools support the role of a director and make fast experimentation across visual storytelling, shot composition and sound design genuinely viable.</p>
       <p>The strongest takeaway: AI can generate visuals quickly, but the best results still come from combining those tools with human direction, timing and storytelling instincts.</p>
     </div>
 
     <div class="exp-section">
       <div class="exp-section-label">Outcome</div>
       <h3>What came out of it</h3>
-      <p>A three-part cinematic sequence demonstrating that AI tools can support character-driven narrative storytelling when approached with a traditional production mindset. The workflow developed here became the foundation for subsequent experiments.</p>
+      <p>A multi-shot cinematic sequence demonstrating that AI tools can support character-driven narrative with dialogue and dramatic tension when approached with a structured production pipeline. Not polished in every shot. But coherent enough to tell a story.</p>
+      <p>The fang consistency problem was partially solved. Getting reliable fang geometry on open-mouth expressions required over-describing the teeth in the prompt and cycling through multiple generations to find usable frames. The physical interaction shots — Seraphine grabbing Rosa, Ethan intervening — were harder. The model struggled to place hands convincingly in contact with another character. I found workarounds that held up at the edit pace, but it was never clean.</p>
+      <p>What I did not expect was for the project to expand. What started as a single short film became a series. Part 1 exists as the complete sequence. Parts 2 and 3 are in development. The characters developed enough weight during production that abandoning them felt wrong.</p>
+      <p>The Rosa and Ethan dynamic worked better than expected. Their scenes together had a tension that landed without needing much dialogue to sell it. The blocking, the framing choices, the way the model occasionally generated an expression that was exactly right — those moments made the edit feel less like a technical exercise and more like an actual story.</p>
+      <p>Ethan remains my favourite character in the AI cast. He was designed to be insufferable in a charming way. That part worked out.</p>
     </div>
 
     <div class="exp-nav">
@@ -156,9 +315,66 @@
     </div>
   </footer>
 
+  <!-- ── Lightbox overlay ── -->
+  <div id="diaLightbox">
+    <button id="diaLbClose" aria-label="Close">&#x2715;</button>
+    <img id="diaLbImg" src="" alt="" />
+    <p id="diaLbCaption"></p>
+  </div>
+
   <script src="../assets/js/nav-paths.js"></script>
   <script src="../assets/js/cursor.js"></script>
   <script src="../assets/js/nav-active.js"></script>
   <script src="../main.js"></script>
+  <script>
+  (function () {
+    var lb     = document.getElementById('diaLightbox');
+    var lbImg  = document.getElementById('diaLbImg');
+    var lbCap  = document.getElementById('diaLbCaption');
+    var lbClose = document.getElementById('diaLbClose');
+
+    function openLightbox(src, caption) {
+      lbImg.src = src;
+      lbImg.alt = caption || '';
+      lbCap.textContent = caption || '';
+      lb.classList.add('lb-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('lb-open');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.lb-trigger').forEach(function (el) {
+      el.addEventListener('click', function () {
+        openLightbox(el.dataset.src, el.dataset.caption);
+      });
+    });
+    lbClose.addEventListener('click', function (e) {
+      e.stopPropagation();
+      closeLightbox();
+    });
+    lb.addEventListener('click', function (e) {
+      if (e.target === lb) closeLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+  </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var iframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
+    iframes.forEach(function (iframe) {
+      var player = new Vimeo.Player(iframe);
+      player.on('ended', function () {
+        player.setCurrentTime(0).then(function () {
+          player.pause();
+        });
+      });
+    });
+  });
+  </script>
 </body>
 </html>

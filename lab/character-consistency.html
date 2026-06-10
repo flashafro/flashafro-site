@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
+  <script src="https://player.vimeo.com/api/player.js"></script>
 </head>
 <body>
 
@@ -66,7 +67,7 @@
       <div class="exp-section-label">Video</div>
       <div style="padding:56.25% 0 0 0; position:relative;">
         <iframe
-          src="https://player.vimeo.com/video/1169531476?badge=0&autopause=0&player_id=0&app_id=58479"
+          src="https://player.vimeo.com/video/1169531476?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&rel=0&controls=1&transparent=0"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
           style="position:absolute;top:0;left:0;width:100%;height:100%;"
@@ -101,8 +102,8 @@
 
       <h4 class="exp-phase">Phase 3: Video Stitching and Continuity</h4>
       <p>To extend sequences, I experimented with using the final frame of one generated clip as the input reference for the next. In theory this should have preserved visual continuity.</p>
-      <p>In practice, the new scene was treated as an entirely independent generation based solely on that single frame. This led to subtle facial drift, proportion inconsistencies, lighting degradation and loss of fine character detail.</p>
-      <p>After multiple iterations, I refined the workflow by combining the end frame of the previous clip, the original character reference sheet and reinforced prompt controls. Reintroducing the character reference anchor reduced drift significantly and restored quality consistency.</p>
+      <p>In practice, the model treated each new scene as an entirely independent generation, working only from that single frame. This led to subtle facial drift, proportion inconsistencies, lighting degradation and loss of fine character detail.</p>
+      <p>After multiple iterations, I refined the workflow by combining the end frame of the previous clip, the original character reference sheet and reinforced prompt controls. Reintroducing the character reference anchor reduced drift significantly and restored consistency.</p>
     </div>
 
     <div class="exp-section">
@@ -121,8 +122,8 @@
     <div class="exp-section">
       <div class="exp-section-label">Outcome</div>
       <h3>What came out of it</h3>
-      <p>The project resulted in a repeatable generative workflow capable of maintaining character recognisability across art styles, preserving proportion and facial consistency, supporting multi-scene stitched video and reducing unpredictable output variances.</p>
-      <p>More importantly it reinforced a broader insight: generative AI becomes viable for creative production when treated as a system to be directed. Only then does it help reduce unpredictability in its output.</p>
+      <p>The project produced a repeatable workflow. One that keeps characters recognisable across art styles, holds proportion and facial consistency through multi-scene stitched video, and cuts down significantly on unpredictable outputs.</p>
+      <p>More importantly it reinforced something I keep coming back to: generative AI works in creative production when you treat it as a system to direct. That is what keeps the output from being random.</p>
     </div>
 
     <div class="exp-nav">
@@ -153,5 +154,18 @@
   <script src="../assets/js/cursor.js"></script>
   <script src="../assets/js/nav-active.js"></script>
   <script src="../main.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var iframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
+    iframes.forEach(function (iframe) {
+      var player = new Vimeo.Player(iframe);
+      player.on('ended', function () {
+        player.setCurrentTime(0).then(function () {
+          player.pause();
+        });
+      });
+    });
+  });
+  </script>
 </body>
 </html>

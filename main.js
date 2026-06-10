@@ -387,9 +387,14 @@ class TextScramble {
     await wait(300);
 
     // ── Step 6: clear text WHILE mask still covers it ─────────────
-    // This is the critical ordering: textContent = "" happens first,
-    // while the mask (still at full width) hides the element.
-    // The browser never gets a chance to paint the old word uncovered.
+    // Critical ordering:
+    //   a) textContent = "" first, mask still at full width — old word
+    //      is hidden; new text does not exist in the DOM yet.
+    //   b) Double-rAF: first rAF queues a second one; the second fires
+    //      after the browser has committed and painted the empty element.
+    //      Only then is the mask removed — the painted frame always shows
+    //      empty space under the mask, never the old word.
+    //   c) Typewriter starts only after the mask is confirmed gone.
     textEl.textContent = '';
 
     // Strike snaps off
@@ -402,15 +407,19 @@ class TextScramble {
     eraserEl.style.opacity    = '0';
     eraserEl.style.transform  = 'rotate(-12deg)';
 
-    // Wait one rAF so the empty textContent is committed to the render tree,
-    // then remove the mask — revealing only empty space, never the old word.
-    await new Promise(res => requestAnimationFrame(res));
+    // Double-rAF: ensures empty textContent is painted BEFORE mask is removed.
+    // Single rAF fires before the paint; the nested second rAF fires after it.
+    await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+
+    // Mask is removed now — the rendered frame already shows empty text,
+    // so there is nothing to flash.
     maskEl.style.cssText = `top:0; left:0; width:0; height:0; transition:none;`;
 
-    // Brief pause while eraser finishes exiting
+    // Brief pause while eraser finishes exiting (mask is gone, text is empty)
     await wait(180);
 
     // ── Step 7: typewriter reveal ─────────────────────────────────
+    // textContent is "" and mask is fully cleared — safe to begin typing.
     await typewriterReveal(textEl, newText, cursorColor);
 
     // Reset eraser position for next cycle
@@ -458,18 +467,22 @@ class TextScramble {
     }
   }
 
-  // Start after hero reveal has settled so text is visible
-  // (hero settle fires at ~1600ms from trigger, trigger at 2500ms = ~4.1s max)
-  // We simply wait for the .hero-settled class before starting
+  // Start after hero reveal has settled so text is visible.
+  // IMPORTANT: cb must be called exactly once — both the MutationObserver
+  // and the setTimeout fallback could fire; the `fired` guard ensures only
+  // the first one wins. Without this guard two concurrent animation loops
+  // would share the same DOM elements and race, causing text flashes.
   function waitForSettled(cb) {
     const hero = document.querySelector('.hero');
     if (hero && hero.classList.contains('hero-settled')) { cb(); return; }
+    let fired = false;
+    function once() { if (fired) return; fired = true; cb(); }
     const mo = new MutationObserver(() => {
-      if (hero && hero.classList.contains('hero-settled')) { mo.disconnect(); cb(); }
+      if (hero && hero.classList.contains('hero-settled')) { mo.disconnect(); once(); }
     });
     mo.observe(hero, { attributes: true, attributeFilter: ['class'] });
-    // Fallback in case hero is already settled or observer misses
-    setTimeout(cb, 5000);
+    // Fallback: fires if observer misses the class change (e.g. fast settle)
+    setTimeout(once, 5000);
   }
 
   waitForSettled(run);

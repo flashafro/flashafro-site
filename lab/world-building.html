@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
+  <script src="https://player.vimeo.com/api/player.js"></script>
 </head>
 <body>
 
@@ -54,15 +55,15 @@
     <div class="exp-section">
       <div class="exp-section-label">The Brief</div>
       <h3>What I was testing</h3>
-      <p>This experiment focused on building cohesive world environments and testing how interconnected locations can be established and maintained across multiple generated scenes.</p>
-      <p>A full writeup is being documented and will be published here shortly.</p>
+      <p>This experiment focused on building cohesive world environments and testing whether interconnected locations could hold together across multiple generated scenes.</p>
+      <p>A full writeup is coming soon.</p>
     </div>
 
     <div class="exp-section">
       <div class="exp-section-label">Video</div>
       <div style="padding:56.25% 0 0 0; position:relative;">
         <iframe
-          src="https://player.vimeo.com/video/1178465557?badge=0&autopause=0&player_id=0&app_id=58479"
+          src="https://player.vimeo.com/video/1178465557?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&rel=0&controls=1&transparent=0"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
           style="position:absolute;top:0;left:0;width:100%;height:100%;"
@@ -124,5 +125,18 @@
   <script src="../assets/js/cursor.js"></script>
   <script src="../assets/js/nav-active.js"></script>
   <script src="../main.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var iframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
+    iframes.forEach(function (iframe) {
+      var player = new Vimeo.Player(iframe);
+      player.on('ended', function () {
+        player.setCurrentTime(0).then(function () {
+          player.pause();
+        });
+      });
+    });
+  });
+  </script>
 </body>
 </html>
