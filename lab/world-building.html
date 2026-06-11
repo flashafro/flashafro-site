@@ -4,13 +4,92 @@
   <script src="../assets/js/cookie-consent.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>World Building and Interconnected Environments — FlashAfro Lab</title>
-  <meta name="description" content="Establishing cohesive world environments and testing how interconnected locations hold together across generated scenes." />
+  <title>Building a world that doesn't fall apart between shots — FlashAfro Lab</title>
+  <meta name="description" content="The Gilded Thief is a 4-minute fantasy action romance set in a North African desert city. Building consistent environments across multiple locations was the hardest thing I'd attempted in AI film." />
   <link rel="icon" href="../assets/images/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* ── Lightbox ── */
+    .lb-trigger { position:relative; cursor:zoom-in; }
+    .lb-trigger img { transition:transform 0.2s ease; display:block; }
+    .lb-trigger:hover img { transform:scale(1.03); }
+    .lb-hint { position:absolute; inset:0; background:rgba(0,0,0,0.38); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s ease; pointer-events:none; }
+    .lb-trigger:hover .lb-hint { opacity:1; }
+    .lb-hint span { font-family:'Caveat', cursive; font-size:15px; color:#fff; letter-spacing:0.02em; }
+    #imgLightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; align-items:center; justify-content:center; flex-direction:column; gap:16px; padding:20px; box-sizing:border-box; }
+    #imgLightbox.lb-open { display:flex !important; }
+    #imgLightbox { cursor:pointer; }
+    #lbImg { max-width:90vw; max-height:82vh; object-fit:contain; border-radius:2px; cursor:default; pointer-events:none; }
+    #lbCaption { font-family:'Caveat', cursive; font-size:16px; color:#F5F0E8; cursor:default; pointer-events:none; text-align:center; max-width:90vw; margin:0; }
+    #lbClose { position:fixed; top:18px; right:24px; font-size:32px; line-height:1; color:#fff; cursor:pointer; background:none; border:none; padding:4px 8px; pointer-events:all; opacity:0.8; }
+    #lbClose:hover { opacity:1; }
+
+    /* ── Act cards ── */
+    .act-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:28px 0; }
+    @media (max-width:767px) { .act-grid { grid-template-columns:1fr; } }
+    .act-card { background:#F5F0E8; border-radius:8px; padding:20px; border-top:3px solid var(--coral); }
+    .act-label { font-family:'Caveat', cursive; font-size:13px; color:var(--coral); letter-spacing:0.06em; text-transform:uppercase; margin:0 0 6px; }
+    .act-title { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--ink); margin:0 0 10px; }
+    .act-copy { font-family:var(--font-body); font-size:13px; color:rgba(26,20,16,0.65); line-height:1.7; margin:0; }
+
+    /* ── Dialogue block ── */
+    .dialogue-block { background:#1a1410; border-radius:8px; padding:28px 32px; margin:28px 0; border-left:3px solid var(--coral); }
+    .dialogue-line { font-family:'Caveat', cursive; font-size:20px; line-height:1.6; margin:0 0 4px; }
+    .dialogue-line:last-child { margin:0; }
+    .dialogue-speaker { color:rgba(245,240,232,0.45); font-size:14px; }
+    .dialogue-text { color:#F5F0E8; }
+
+    /* ── Character cards ── */
+    .cast-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:28px 0; }
+    @media (max-width:767px) { .cast-grid { grid-template-columns:1fr; } }
+    .cast-card { background:#F5F0E8; border-radius:8px; overflow:hidden; }
+    .cast-card-img { aspect-ratio:3/4; overflow:hidden; }
+    .cast-card-img img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+    .cast-card-body { padding:18px 20px; }
+    .cast-card-name { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--ink); margin:0 0 4px; }
+    .cast-card-role { font-family:'Caveat', cursive; font-size:14px; color:var(--coral); margin:0 0 10px; }
+    .cast-card-copy { font-family:var(--font-body); font-size:13px; color:rgba(26,20,16,0.65); line-height:1.7; margin:0 0 12px; }
+    .cast-card-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .cast-tag { font-family:var(--font-body); font-size:11px; color:rgba(26,20,16,0.5); background:rgba(26,20,16,0.07); border-radius:20px; padding:3px 10px; letter-spacing:0.03em; }
+
+    /* ── Environment sections ── */
+    .env-section { margin:0 0 44px; }
+    .env-label { font-family:'Caveat', cursive; font-size:15px; color:var(--coral); letter-spacing:0.04em; margin:0 0 10px; }
+    .env-copy { font-family:var(--font-body); font-size:15px; color:rgba(26,20,16,0.7); line-height:1.75; margin:0 0 16px; }
+    .env-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width:767px) { .env-grid-2 { grid-template-columns:1fr; } }
+    .env-grid-2 .lb-trigger img { width:100%; display:block; aspect-ratio:16/9; object-fit:cover; border-radius:6px; }
+    .env-img-full img { width:100%; display:block; border-radius:6px; }
+
+    /* ── Prompt blocks ── */
+    .prompt-block { background:rgba(245,240,232,0.05); border:1px solid rgba(245,240,232,0.1); border-radius:6px; padding:20px 24px; margin:0 0 16px; }
+    .prompt-block:last-child { margin:0; }
+    .prompt-label { font-family:'Caveat', cursive; font-size:14px; color:#FFE566; letter-spacing:0.04em; margin:0 0 10px; }
+    .prompt-text { font-family:var(--font-body); font-size:13px; color:rgba(245,240,232,0.75); line-height:1.75; margin:0; white-space:pre-wrap; }
+
+    /* ── Pipeline ── */
+    .pipeline { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:20px 0; }
+    .pipeline-step { font-family:'Caveat', cursive; font-size:16px; color:var(--ink); background:#F5F0E8; border:2px solid var(--coral); border-radius:6px; padding:8px 16px; }
+    .pipeline-arrow { font-family:var(--font-body); font-size:14px; color:rgba(26,20,16,0.35); }
+
+    /* ── Learning cards ── */
+    .learning-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+    @media (max-width:767px) { .learning-grid { grid-template-columns:1fr; } }
+    .learning-card { background:#F5F0E8; border-radius:8px; padding:20px; }
+    .learning-num { font-family:'Caveat', cursive; font-size:13px; color:var(--coral); letter-spacing:0.06em; margin:0 0 6px; }
+    .learning-title { font-family:var(--font-display); font-size:15px; font-weight:600; color:var(--ink); margin:0 0 8px; }
+    .learning-copy { font-family:var(--font-body); font-size:13px; color:rgba(26,20,16,0.65); line-height:1.7; margin:0; }
+
+    /* ── Tool cards ── */
+    .tool-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+    @media (max-width:767px) { .tool-cards { grid-template-columns:1fr; } }
+    .tool-card { background:#F5F0E8; border-radius:8px; padding:20px; }
+    .tool-card-name { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--ink); margin:0 0 6px; }
+    .tool-card-copy { font-family:var(--font-body); font-size:13px; color:rgba(26,20,16,0.6); line-height:1.6; margin:0; }
+  </style>
   <script src="https://player.vimeo.com/api/player.js"></script>
 </head>
 <body>
@@ -19,7 +98,7 @@
   <div class="cursor-ring" id="cursorRing"></div>
 
   <nav class="nav" id="nav">
-    <a href="index.html" class="nav-back">← the lab</a>
+    <a href="index.html" class="nav-back">&#8592; the lab</a>
     <a href="../index.html" data-nav-href="index.html" class="nav-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
     <ul class="nav-links">
       <li><a href="../index.html" data-nav-href="index.html" class="nav-link magnetic">Home</a></li>
@@ -43,72 +122,346 @@
 
   <main class="exp-wrap">
 
-    <div class="post-eyebrow">The Lab</div>
-    <h1 class="exp-title">World Building and Interconnected Environments</h1>
-    <p class="exp-desc">Establishing cohesive world environments and testing how interconnected locations hold together across generated scenes.</p>
+    <div class="post-eyebrow">The Lab &#8212; Experiment 04</div>
+    <h1 class="exp-title">Building a world that doesn&#8217;t fall apart between shots</h1>
+    <p class="exp-desc">The Gilded Thief is a 4-minute fantasy action romance set in a North African desert city. Building consistent environments across multiple locations was the hardest thing I&#8217;d attempted in AI film. This is what I learned.</p>
 
     <div class="exp-tools">
       <span class="exp-tool-pill exp-tool-date">2026</span>
-      <span class="exp-tool-pill">Tools TBC</span>
+      <span class="exp-tool-pill">Kling AI 3.0 Omni</span>
+      <span class="exp-tool-pill">Midjourney</span>
+      <span class="exp-tool-pill">Grok</span>
+      <span class="exp-tool-pill">DaVinci Resolve</span>
     </div>
+    <p style="font-family:var(--font-body); font-size:10px; color:rgba(26,20,16,0.35); letter-spacing:0.06em; margin:6px 0 0;">Updated June 2026</p>
 
+    <!-- ── 1. THE FILM ── -->
     <div class="exp-section">
-      <div class="exp-section-label">The Brief</div>
-      <h3>What I was testing</h3>
-      <p>This experiment focused on building cohesive world environments and testing whether interconnected locations could hold together across multiple generated scenes.</p>
-      <p>A full writeup is coming soon.</p>
-    </div>
-
-    <div class="exp-section">
-      <div class="exp-section-label">Video</div>
-      <div style="padding:56.25% 0 0 0; position:relative;">
+      <div class="exp-section-label">The Film</div>
+      <p>A thief, a hidden royal, a stolen magical orb, and a rooftop that nearly broke me. Watch first, then read the chaos that went into making it.</p>
+      <div style="padding:56.25% 0 0 0; position:relative; margin-top:20px;">
         <iframe
           src="https://player.vimeo.com/video/1178465557?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&rel=0&controls=1&transparent=0"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
           style="position:absolute;top:0;left:0;width:100%;height:100%;"
-          title="World Building and Interconnected Environments">
+          title="The Gilded Thief">
         </iframe>
       </div>
-      <script src="https://player.vimeo.com/api/player.js"></script>
     </div>
 
+    <!-- ── 2. THE STORY ── -->
     <div class="exp-section">
-      <div class="exp-section-label">What I Tested</div>
-      <h3>The questions I was asking</h3>
-      <p>This section is being documented and will be published here shortly.</p>
+      <div class="exp-section-label">The Story</div>
+      <h3>Six acts, five locations, one very specific orb</h3>
+      <p>I wrote a script before I generated a single frame. That discipline was the only reason this held together. The story moves through five distinct locations in under four minutes: a shop, a market street, a quiet alley, a rooftop, and the street below.</p>
+
+      <div class="act-grid">
+        <div class="act-card">
+          <p class="act-label">Act 1</p>
+          <p class="act-title">The Shop</p>
+          <p class="act-copy">Kaelis arrives to collect his orb. Nyra&#8217;s already there. She takes it. He notices immediately. Leaves with only &#8220;Keep it&#8221; to the shopkeeper.</p>
+        </div>
+        <div class="act-card">
+          <p class="act-label">Act 2</p>
+          <p class="act-title">The Market</p>
+          <p class="act-copy">Nyra moves through the crowd. Slips into a quiet alley. Examines the orb: she knows it&#8217;s valuable but not why. Kaelis appears. &#8220;Hello there.&#8221;</p>
+        </div>
+        <div class="act-card">
+          <p class="act-label">Act 3</p>
+          <p class="act-title">The Confrontation</p>
+          <p class="act-copy">She denies everything. He&#8217;s not convinced. The tension is immediate. She tries charm as a weapon. He finds it more entertaining than threatening.</p>
+        </div>
+        <div class="act-card">
+          <p class="act-label">Act 4</p>
+          <p class="act-title">The Fight</p>
+          <p class="act-copy">A scrappy fight sequence. Kaelis purely defensive. He pins her wrists. She admits she needs the orb. Stomps his foot and runs. He goes after her.</p>
+        </div>
+        <div class="act-card">
+          <p class="act-label">Act 5</p>
+          <p class="act-title">The Rooftop</p>
+          <p class="act-copy">He corners her against the parapet. Charged silence. She kisses him. He almost kisses back. She breaks free. He catches only her bracelet. She steps backward off the edge.</p>
+        </div>
+        <div class="act-card">
+          <p class="act-label">Act 6</p>
+          <p class="act-title">The Ending</p>
+          <p class="act-copy">She&#8217;s gone. No body. He sits on the parapet, turning her bracelet in his fingers. A guard arrives: &#8220;Did you get what you came for?&#8221; He answers: &#8220;Not yet. But I will soon.&#8221;</p>
+        </div>
+      </div>
+
     </div>
 
+    <!-- ── 3. THE CAST ── -->
     <div class="exp-section">
-      <div class="exp-section-label">Process</div>
-      <h3>How I approached it</h3>
-      <p>This section is being documented and will be published here shortly.</p>
+      <div class="exp-section-label">The Cast</div>
+      <h3>Two characters, one stolen orb, zero trust</h3>
+
+      <div class="cast-grid">
+        <div class="cast-card">
+          <div class="cast-card-img">
+            <img src="../assets/images/gildedthief/nyra-base.png" alt="Nyra character portrait" />
+          </div>
+          <div class="cast-card-body">
+            <p class="cast-card-name">Nyra</p>
+            <p class="cast-card-role">Female lead</p>
+            <p class="cast-card-copy">A skilled professional thief in her mid-twenties. Wild black curly hair, fitted all-black robes, dark leather shoulder armour, black scarf. Moves in magical underground circles. Quick-witted, fearless, and very good at performing confidence even when she does not have it.</p>
+            <div class="cast-card-tags">
+              <span class="cast-tag">Throwing weapons</span>
+              <span class="cast-tag">Dagger</span>
+              <span class="cast-tag">Magic adjacent</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cast-card">
+          <div class="cast-card-img">
+            <img src="../assets/images/gildedthief/kaelis-portrait4.png" alt="Kaelis character portrait" />
+          </div>
+          <div class="cast-card-body">
+            <p class="cast-card-name">Kaelis</p>
+            <p class="cast-card-role">Male lead</p>
+            <p class="cast-card-copy">A hidden royal travelling incognito. Known to Nyra only as Kade. White bleached dreadlocks, green eyes, cream and sand-tone desert robes. Formally trained in combat but goes entirely defensive in the fight. Quiet, composed, and far more entertained by her than he lets on.</p>
+            <div class="cast-card-tags">
+              <span class="cast-tag">Combat trained</span>
+              <span class="cast-tag">Incognito</span>
+              <span class="cast-tag">Royalty</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4 class="exp-phase">Character reference sheets</h4>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0 8px;">
+        <div class="lb-trigger" data-src="../assets/images/gildedthief/Nyra-character-sheet.png" data-caption="Nyra character reference sheet" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/gildedthief/Nyra-character-sheet.png" alt="Nyra character reference sheet" style="width:100%; display:block;" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+        <div class="lb-trigger" data-src="../assets/images/gildedthief/kaelis-character-sheetv4.png" data-caption="Kaelis character reference sheet" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/gildedthief/kaelis-character-sheetv4.png" alt="Kaelis character reference sheet" style="width:100%; display:block;" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+      </div>
+      <p style="font-family:var(--font-display); font-size:13px; color:rgba(26,20,16,0.45); margin:0; text-align:center;">Nyra (left) and Kaelis (right). Full turnaround sheets used as @character anchors in Kling.</p>
     </div>
 
+    <!-- ── 4. BUILDING THE WORLD ── -->
     <div class="exp-section">
-      <div class="exp-section-label">Key Learnings</div>
-      <h3>What I took away</h3>
-      <p>This section is being documented and will be published here shortly.</p>
+      <div class="exp-section-label">Building the World</div>
+      <h3>Every location, before a single character was placed in it</h3>
+      <p>I built the world completely in Midjourney before opening Kling. Every location, at every angle I thought I might need. It was the most front-loaded process I had used. It was also the most important decision I made on this project.</p>
+
+      <div class="env-section">
+        <p class="env-label">The market exterior</p>
+        <p class="env-copy">Built several versions at different distances and angles so the same location could be cut to from multiple camera positions without the world changing underneath the characters.</p>
+        <div class="env-grid-2">
+          <div class="lb-trigger" data-src="../assets/images/gildedthief/GT-market.png" data-caption="The market exterior">
+            <img src="../assets/images/gildedthief/GT-market.png" alt="The market exterior" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+          <div class="lb-trigger" data-src="../assets/images/gildedthief/GT-market-2.png" data-caption="The market exterior, second angle">
+            <img src="../assets/images/gildedthief/GT-market-2.png" alt="The market exterior, second angle" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="env-section">
+        <p class="env-label">The elevated view</p>
+        <p class="env-copy">Getting a consistent elevated angle was harder than it looks. The city layout needs to feel coherent from above. You cannot just generate a bird&#8217;s eye shot from a street-level reference and expect it to match.</p>
+        <div class="env-grid-2">
+          <div class="lb-trigger" data-src="../assets/images/gildedthief/GT-market-elevated-1.png" data-caption="Elevated city view, angle one">
+            <img src="../assets/images/gildedthief/GT-market-elevated-1.png" alt="Elevated city view, angle one" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+          <div class="lb-trigger" data-src="../assets/images/gildedthief/GT-market-elevated-2.png" data-caption="Elevated city view, angle two">
+            <img src="../assets/images/gildedthief/GT-market-elevated-2.png" alt="Elevated city view, angle two" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="env-section">
+        <p class="env-label">The alleyway</p>
+        <p class="env-copy">Needed to feel narrow, slightly claustrophobic, warm. It is where the first real confrontation happens. The lighting had to carry tension without relying on camera movement.</p>
+        <div class="env-img-full lb-trigger" data-src="../assets/images/gildedthief/GT-market-alleyway.png" data-caption="The alleyway" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/gildedthief/GT-market-alleyway.png" alt="The alleyway" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+      </div>
+
+      <div class="env-section">
+        <p class="env-label">The rooftop</p>
+        <p class="env-copy">The most iterations of any environment. Needed a significant drop visible beyond the parapet and the whole city skyline behind it. Getting the scale right so the height felt genuinely dangerous took multiple rounds in Midjourney.</p>
+        <div class="env-img-full lb-trigger" data-src="../assets/images/gildedthief/GT-market-rooftopV2.png" data-caption="The rooftop" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/gildedthief/GT-market-rooftopV2.png" alt="The rooftop" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+      </div>
+
+      <div class="env-section" style="margin-bottom:0;">
+        <p class="env-label">The shop interiors</p>
+        <p class="env-copy">Warm amber lanterns, shelves of glowing artefacts. The cyan glow of the orb needed to read clearly against all of it, which shaped the colour decisions early on.</p>
+        <div class="env-grid-2">
+          <div class="lb-trigger" data-src="../assets/images/gildedthief/GT-shop.png" data-caption="The shop, exterior entrance">
+            <img src="../assets/images/gildedthief/GT-shop.png" alt="The shop, exterior entrance" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+          <div class="lb-trigger" data-src="../assets/images/gildedthief/GT-shop-innershop.png" data-caption="The shop, inner room">
+            <img src="../assets/images/gildedthief/GT-shop-innershop.png" alt="The shop, inner room" />
+            <div class="lb-hint"><span>click to expand</span></div>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- ── 5. PROMPTS ── -->
+    <div style="background:#1a1410; border-radius:12px; padding:40px 36px; margin:0 0 40px;">
+      <div class="exp-section-label" style="color:rgba(245,240,232,0.45);">What the Prompts Actually Looked Like</div>
+      <h3 style="color:#F5F0E8; margin-top:8px;">Nothing was abbreviated. Everything was described, every time.</h3>
+      <p style="color:rgba(245,240,232,0.7); font-family:var(--font-body); font-size:15px; line-height:1.75; margin-bottom:28px;">Kling has no memory of your previous generation. Every prompt starts from scratch. That means every prompt needs to contain everything: character appearance, environment details, lighting, camera position, ambient sound, what is and is not in frame. Shorthand breaks the consistency.</p>
+
+      <div class="prompt-block">
+        <p class="prompt-label">Kaelis entering the shop</p>
+        <p class="prompt-text">@Kaelis walks slowly through the arched stone entrance of an ancient North African antiquities shop. Warm amber lantern light. Stone floor. Wooden shelves lined with artefacts and glass jars. A large broad-shouldered bald Black man in a long white robe stands behind a wooden counter. Camera follows at medium distance. No dialogue. No music. No other characters visible. 24fps, cinematic, photorealistic.</p>
+      </div>
+
+      <div class="prompt-block">
+        <p class="prompt-label">Nyra examining the orb in the alley</p>
+        <p class="prompt-text">@Nyra stands alone in a narrow North African stone alleyway. Golden afternoon light from above. She holds @Orb in both cupped palms, no larger than a tennis ball, sitting completely within her hands, swirling cyan energy inside. She examines it with curiosity, turning it slowly. Slight ambient crowd noise off-screen. No dialogue. No music. 24fps, cinematic, photorealistic.</p>
+      </div>
+
+      <div class="prompt-block">
+        <p class="prompt-label">The rooftop final moments</p>
+        <p class="prompt-text">@Kaelis stands on a large open stone rooftop terrace. Wide shot. City skyline visible in distance below the parapet, significant drop visible. Warm golden sunset light. He walks slowly to the parapet edge and looks out over the city. Sits on the edge, feet dangling. He turns a small leather bracelet with a silver symbol between his fingers. No dialogue. No music. 24fps, cinematic, photorealistic.</p>
+      </div>
+    </div>
+
+    <!-- ── 6. PRODUCTION ORDER ── -->
     <div class="exp-section">
-      <div class="exp-section-label">Outcome</div>
-      <h3>What came out of it</h3>
-      <p>This section is being documented and will be published here shortly.</p>
+      <div class="exp-section-label">The Production Order</div>
+      <h3>World first. Everything else after.</h3>
+      <p>I had been building scenes around characters: design the person, then figure out where to put them. Flipping that order, world first, was the single biggest change I made to my workflow. By the time I generated the first character shot, every location already existed at every angle I needed. There were no surprises in Kling.</p>
+
+      <div class="pipeline">
+        <span class="pipeline-step">World</span>
+        <span class="pipeline-arrow">&#8594;</span>
+        <span class="pipeline-step">Story</span>
+        <span class="pipeline-arrow">&#8594;</span>
+        <span class="pipeline-step">Environment</span>
+        <span class="pipeline-arrow">&#8594;</span>
+        <span class="pipeline-step">Character</span>
+        <span class="pipeline-arrow">&#8594;</span>
+        <span class="pipeline-step">Motion</span>
+        <span class="pipeline-arrow">&#8594;</span>
+        <span class="pipeline-step">Sound</span>
+      </div>
+
+      <p>The pipeline above is the working one. Every step is active and in that order. Skipping or reordering any stage caused problems that were expensive to fix later.</p>
     </div>
 
+    <!-- ── 7. WHAT I TOOK AWAY ── -->
+    <div class="exp-section">
+      <div class="exp-section-label">What I Took Away</div>
+      <h3>Six things I would tell myself at the start</h3>
+
+      <div class="learning-grid">
+        <div class="learning-card">
+          <p class="learning-num">01</p>
+          <p class="learning-title">Environment before character</p>
+          <p class="learning-copy">Build your world completely in Midjourney before you touch Kling. Every location, every angle you will need. Characters go into a finished world, not the other way around.</p>
+        </div>
+        <div class="learning-card">
+          <p class="learning-num">02</p>
+          <p class="learning-title">Never put two leads in one generation</p>
+          <p class="learning-copy">Kling will attempt to generate dialogue between them. It will be gibberish. Generate each character separately and cut between them in the edit. More work, far cleaner result.</p>
+        </div>
+        <div class="learning-card">
+          <p class="learning-num">03</p>
+          <p class="learning-title">Start frame to end frame continuity</p>
+          <p class="learning-copy">Using the end frame of one shot as the start frame of the next was the single biggest improvement to visual consistency. The tradeoff is slight environmental drift between shots. Choosing your poison is part of it.</p>
+        </div>
+        <div class="learning-card">
+          <p class="learning-num">04</p>
+          <p class="learning-title">Describe everything, every time</p>
+          <p class="learning-copy">Background characters, ambient crowd, lighting direction, camera position. No shorthand. Kling has no memory of your previous prompt. Every generation starts from zero.</p>
+        </div>
+        <div class="learning-card">
+          <p class="learning-num">05</p>
+          <p class="learning-title">Keep the orb specific</p>
+          <p class="learning-copy">&#8220;No larger than a tennis ball, sitting completely within one cupped palm.&#8221; Every single prompt. The moment you get vague about prop size, it drifts.</p>
+        </div>
+        <div class="learning-card">
+          <p class="learning-num">06</p>
+          <p class="learning-title">Complexity is the enemy of consistency</p>
+          <p class="learning-copy">The more detailed and layered a scene, the harder it is to replicate. The rooftop required the most iterations. It was also the most complex.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 8. TOOLS USED ── -->
+    <div class="exp-section">
+      <div class="exp-section-label">Tools Used</div>
+      <h3>What I used and what each one did</h3>
+
+      <div class="tool-cards">
+        <div class="tool-card">
+          <p class="tool-card-name">Kling AI 3.0 Omni</p>
+          <p class="tool-card-copy">Video generation and character animation. Used for all motion: character scenes, environment shots, the fight sequence and the rooftop finale.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">Midjourney</p>
+          <p class="tool-card-copy">Environment and world asset creation. Every location reference image was built here before going anywhere near video generation.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">Grok / Aurora</p>
+          <p class="tool-card-copy">Character reference sheets. Used to build the turnaround sheets for Nyra and Kaelis that were passed as @character anchors into Kling.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">DaVinci Resolve</p>
+          <p class="tool-card-copy">Editing, sound design and colour grade. The film came together here: cutting between characters, pacing the fight, laying in the score and the ambient city sound.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 9. SHARE ── -->
+    <div class="post-share" id="labShare">
+      <span class="post-share-label">Share this</span>
+      <div class="post-share-buttons">
+        <a class="post-share-btn" id="shareLinkedIn"
+           href="https://www.linkedin.com/sharing/share-offsite/?url="
+           target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="post-share-btn" id="shareTwitter"
+           href="https://twitter.com/intent/tweet?text=&url="
+           target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        <button class="post-share-btn" id="shareCopyLink">Copy link</button>
+      </div>
+      <a class="post-share-convo"
+         href="https://www.linkedin.com/in/cheryl-harris-uk/"
+         target="_blank" rel="noopener noreferrer">
+        Thoughts? Continue the conversation on LinkedIn &#8594;
+      </a>
+    </div>
+
+    <!-- ── 10. EXP NAV ── -->
     <div class="exp-nav">
-      <a href="character-consistency.html">← Character Consistency</a>
-      <span></span>
+      <a href="character-consistency.html">&#8592; Character Consistency</a>
+      <a href="index.html">Back to The Lab &#8594;</a>
     </div>
 
   </main>
+
+  <!-- Lightbox overlay -->
+  <div id="imgLightbox">
+    <button id="lbClose" aria-label="Close">&#x2715;</button>
+    <img id="lbImg" src="" alt="" />
+    <p id="lbCaption"></p>
+  </div>
 
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-logo">
         <a href="../index.html" data-nav-href="index.html" class="nav-logo-text footer-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
-        <p class="footer-tagline handwritten">making 'things' with AI ✦</p>
+        <p class="footer-tagline handwritten">making &#8216;things&#8217; with AI &#10022;</p>
       </div>
       <nav class="footer-nav">
         <a href="../index.html" data-nav-href="index.html">Home</a>
@@ -117,7 +470,7 @@
         <a href="../index.html#about"    data-nav-href="index.html#about">About</a>
         <a href="../index.html#connect"  data-nav-href="index.html#connect">Connect</a>
       </nav>
-      <p class="footer-copy">© 2026 Cheryl Harris / FlashAfro.com Made with curiosity.</p>
+      <p class="footer-copy">&#169; 2026 Cheryl Harris / FlashAfro.com Made with curiosity.</p>
     </div>
   </footer>
 
@@ -125,6 +478,47 @@
   <script src="../assets/js/cursor.js"></script>
   <script src="../assets/js/nav-active.js"></script>
   <script src="../main.js"></script>
+
+  <!-- Lightbox -->
+  <script>
+  (function () {
+    var lb      = document.getElementById('imgLightbox');
+    var lbImg   = document.getElementById('lbImg');
+    var lbCap   = document.getElementById('lbCaption');
+    var lbClose = document.getElementById('lbClose');
+
+    function openLightbox(src, caption) {
+      lbImg.src = src;
+      lbImg.alt = caption || '';
+      lbCap.textContent = caption || '';
+      lb.classList.add('lb-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('lb-open');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.lb-trigger').forEach(function (el) {
+      el.addEventListener('click', function () {
+        openLightbox(el.dataset.src, el.dataset.caption);
+      });
+    });
+    lbClose.addEventListener('click', function (e) {
+      e.stopPropagation();
+      closeLightbox();
+    });
+    lb.addEventListener('click', function (e) {
+      if (e.target === lb) closeLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+  </script>
+
+  <!-- Vimeo end screen suppression -->
   <script>
   document.addEventListener('DOMContentLoaded', function () {
     var iframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
@@ -138,5 +532,41 @@
     });
   });
   </script>
+
+  <!-- Share section wiring -->
+  <script>
+  (function () {
+    var pageUrl   = encodeURIComponent('https://flashafro.com/lab/world-building.html');
+    var pageTitle = encodeURIComponent(document.title);
+    var li = document.getElementById('shareLinkedIn');
+    var tw = document.getElementById('shareTwitter');
+    if (li) li.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + pageUrl;
+    if (tw) tw.href = 'https://twitter.com/intent/tweet?text=' + pageTitle + '&url=' + pageUrl;
+    var copyBtn = document.getElementById('shareCopyLink');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var btn = this;
+        var url = 'https://flashafro.com/lab/world-building.html';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () {
+            btn.textContent = 'Copied!';
+            setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+          });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = url;
+          ta.style.cssText = 'position:fixed;opacity:0;';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          btn.textContent = 'Copied!';
+          setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+        }
+      });
+    }
+  })();
+  </script>
+
 </body>
 </html>
