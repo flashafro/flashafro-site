@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../assets/js/cookie-consent.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lip sync and audio-led editing &#8212; FlashAfro Lab</title>
+  <meta name="description" content="Lip syncing AI-generated characters to an existing vocal performance. The Odyssey as a test case. A genuinely humbling challenge." />
+  <link rel="icon" href="../assets/images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* Lightbox */
+    .lb-trigger { position:relative; cursor:zoom-in; }
+    .lb-trigger img { transition:transform 0.2s ease; display:block; }
+    .lb-trigger:hover img { transform:scale(1.03); }
+    .lb-hint { position:absolute; inset:0; background:rgba(0,0,0,0.38); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s ease; pointer-events:none; }
+    .lb-trigger:hover .lb-hint { opacity:1; }
+    .lb-hint span { font-family:'Caveat', cursive; font-size:15px; color:#fff; letter-spacing:0.02em; }
+    #imgLightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; align-items:center; justify-content:center; flex-direction:column; gap:16px; padding:20px; box-sizing:border-box; }
+    #imgLightbox.lb-open { display:flex !important; }
+    #imgLightbox { cursor:pointer; }
+    #lbImg { max-width:90vw; max-height:82vh; object-fit:contain; border-radius:2px; cursor:default; pointer-events:none; }
+    #lbCaption { font-family:'Caveat', cursive; font-size:16px; color:#F5F0E8; cursor:default; pointer-events:none; text-align:center; max-width:90vw; margin:0; }
+    #lbClose { position:fixed; top:18px; right:24px; font-size:32px; line-height:1; color:#fff; cursor:pointer; background:none; border:none; padding:4px 8px; pointer-events:all; opacity:0.8; }
+    #lbClose:hover { opacity:1; }
+
+    /* 2-col image grid */
+    .img-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0 8px; }
+    @media (max-width:767px) { .img-grid-2 { grid-template-columns:1fr; } }
+    .img-grid-2 .lb-trigger img { width:100%; display:block; aspect-ratio:3/4; object-fit:cover; border-radius:6px; }
+    .img-full img { width:100%; display:block; border-radius:6px; }
+    .img-caption { font-family:var(--font-display); font-size:13px; color:rgba(26,20,16,0.45); margin:0 0 24px; text-align:center; }
+
+    /* Learning cards — dark variant */
+    .learning-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+    @media (max-width:767px) { .learning-grid { grid-template-columns:1fr; } }
+    .learning-card-dark { background:rgba(245,240,232,0.06); border:1px solid rgba(245,240,232,0.1); border-radius:8px; padding:20px; }
+    .learning-num { font-family:'Caveat', cursive; font-size:13px; color:#FFE566; letter-spacing:0.06em; margin:0 0 6px; }
+    .learning-title { font-family:var(--font-display); font-size:15px; font-weight:600; color:#F5F0E8; margin:0 0 8px; }
+    .learning-copy { font-family:var(--font-body); font-size:13px; color:rgba(245,240,232,0.65); line-height:1.7; margin:0; }
+
+    /* Tool cards */
+    .tool-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0; }
+    @media (max-width:767px) { .tool-cards { grid-template-columns:1fr; } }
+    .tool-card { background:#F5F0E8; border-radius:8px; padding:20px; }
+    .tool-card-name { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--ink); margin:0 0 6px; }
+    .tool-card-copy { font-family:var(--font-body); font-size:13px; color:rgba(26,20,16,0.6); line-height:1.6; margin:0; }
+  </style>
+  <script src="https://player.vimeo.com/api/player.js"></script>
+</head>
+<body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-back">&#8592; the lab</a>
+    <a href="../index.html" data-nav-href="index.html" class="nav-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+    <ul class="nav-links">
+      <li><a href="../index.html" data-nav-href="index.html" class="nav-link magnetic">Home</a></li>
+      <li><a href="../index.html#lab"      data-nav-href="index.html#lab"      class="nav-link magnetic">The Lab</a></li>
+      <li><a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="nav-link magnetic">Thoughts</a></li>
+      <li><a href="../index.html#about"    data-nav-href="index.html#about"    class="nav-link magnetic">About</a></li>
+      <li><a href="../index.html#connect"  data-nav-href="index.html#connect"  class="nav-cta magnetic">Connect</a></li>
+    </ul>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html" data-nav-href="index.html" class="mobile-link">Home</a>
+    <a href="../index.html#lab"      data-nav-href="index.html#lab"      class="mobile-link">The Lab</a>
+    <a href="../index.html#thoughts" data-nav-href="index.html#thoughts" class="mobile-link">Thoughts</a>
+    <a href="../index.html#about"    data-nav-href="index.html#about"    class="mobile-link">About</a>
+    <a href="../index.html#connect"  data-nav-href="index.html#connect"  class="mobile-link">Connect</a>
+  </div>
+
+  <main class="exp-wrap">
+
+    <div class="post-eyebrow">The Lab &#8212; Experiment 05</div>
+    <h1 class="exp-title">Lip sync and audio-led editing</h1>
+    <p class="exp-desc">Lip syncing AI-generated characters to an existing vocal performance. The Odyssey as a test case. A genuinely humbling challenge.</p>
+
+    <div class="exp-tools">
+      <span class="exp-tool-pill exp-tool-date">2026</span>
+      <span class="exp-tool-pill">ChatGPT</span>
+      <span class="exp-tool-pill">Midjourney</span>
+      <span class="exp-tool-pill">Kling Omni</span>
+      <span class="exp-tool-pill">Higgsfield Seedance</span>
+      <span class="exp-tool-pill">Nano Banana Pro</span>
+      <span class="exp-tool-pill">Lalal.ai</span>
+      <span class="exp-tool-pill">DaVinci Resolve</span>
+    </div>
+    <p style="font-family:var(--font-body); font-size:10px; color:rgba(26,20,16,0.35); letter-spacing:0.06em; margin:6px 0 0;">Updated July 2026</p>
+
+    <!-- 1. INTRO -->
+    <div class="exp-section">
+      <div class="exp-section-label">This one is personal</div>
+      <p>I&#8217;m a huge fan of Epic the Musical, Jorge Rivera-Herrans&#8217; serial adaptation of Homer&#8217;s Odyssey. My Goodbye is my favourite song in the entire soundtrack. It&#8217;s Athena delivering a cold, devastating farewell to Odysseus on the shores of burning Troy. With Greek mythology having a bit of a moment right now thanks to Christopher Nolan&#8217;s The Odyssey, I wanted to create a visual interpretation of that scene. Specifically the moment she says goodbye for the last time.</p>
+      <p>The goal was simple in theory: lip sync an AI-generated character to an existing vocal performance. In practice it was one of the most technically challenging things I&#8217;ve attempted in this space.</p>
+    </div>
+
+    <!-- 2. VIDEO -->
+    <div class="exp-section">
+      <div class="exp-section-label">Video</div>
+      <div style="padding:56.25% 0 0 0; position:relative; margin-bottom:8px;">
+        <iframe
+          src="https://player.vimeo.com/video/1211235517?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&rel=0&controls=1&transparent=0"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;"
+          title="Lip sync and audio-led editing: My Goodbye">
+        </iframe>
+      </div>
+      <p style="font-family:var(--font-display); font-size:13px; color:rgba(26,20,16,0.45); margin:8px 0 0; text-align:center;">My Goodbye. A fan interpretation of the song by Jorge Rivera-Herrans. Non-commercial fan project.</p>
+    </div>
+
+    <!-- 3. THE CHALLENGE -->
+    <div class="exp-section">
+      <div class="exp-section-label">The Challenge</div>
+      <h3>Audio first is a different problem entirely</h3>
+      <p>Typically how I work is to generate the voice to match the video. Doing it the other way around meant every tool in my pipeline was fighting me. The audio existed, it could not be changed, and the visuals had to serve it completely. The timing, the mouth shapes, the emotional delivery all had to match a performance I had no control over.</p>
+      <p>On top of that, lip sync results are very mixed the moment your character is anything other than a tight close-up. The further away the character is in the shot, or the moment you introduce a second character into the scene, the less reliable the results become. That creates a real tension between wanting cinematic variety in your shots and actually getting the lip sync to land.</p>
+    </div>
+
+    <!-- 4. WHERE IT WENT WRONG -->
+    <div class="exp-section">
+      <div class="exp-section-label">Where It Went Wrong</div>
+      <h3>What happens when you don&#8217;t lock the style first</h3>
+      <p>The biggest mistake was one I&#8217;d made before and should have known better. I started generating character images before I&#8217;d locked either the characters or the visual world they existed in. Both drifted significantly as a result.</p>
+
+      <div class="img-grid-2">
+        <div class="lb-trigger" data-src="../assets/images/epic/athena_closeup_grab.png" data-caption="Early Athena, photorealistic style before restyling" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/epic/athena_closeup_grab.png" alt="Early Athena, photorealistic style before restyling" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+        <div class="lb-trigger" data-src="../assets/images/epic/stunned-odyV3.png" data-caption="Early Odysseus, photorealistic style before restyling" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/epic/stunned-odyV3.png" alt="Early Odysseus, photorealistic style before restyling" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+      </div>
+      <p class="img-caption">The early versions pulled toward photorealism. Wrong direction for the world I was building.</p>
+
+      <p>By the time I had a consistent background, the two characters had already evolved away from each other stylistically. I had to stop, rebuild reference sheets for both from scratch and re-establish the visual language before I could move forward.</p>
+
+      <div class="img-grid-2">
+        <div class="lb-trigger" data-src="../assets/images/epic/Athena-02.png" data-caption="Athena restyled, illustrated mosaic aesthetic" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/epic/Athena-02.png" alt="Athena restyled, illustrated mosaic aesthetic" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+        <div class="lb-trigger" data-src="../assets/images/epic/Odysseus-02.png" data-caption="Odysseus restyled, illustrated mosaic aesthetic" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/epic/Odysseus-02.png" alt="Odysseus restyled, illustrated mosaic aesthetic" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+      </div>
+      <p class="img-caption">The restyled versions landed on an illustrated mosaic aesthetic: gold and amber tones, graphic linework, glowing eyes. Much more fitting for a goddess.</p>
+
+      <p>Some of that inconsistency from the early drift is still visible in the final film. That&#8217;s entirely down to the sequence of decisions, not the tools.</p>
+    </div>
+
+    <!-- 5. CHARACTER REFERENCE SHEETS -->
+    <div class="exp-section">
+      <div class="exp-section-label">Character Reference Sheets</div>
+      <h3>Getting the characters locked</h3>
+      <p>Having these locked before animation was the thing that held the later sequences together. Should have been step one, not an afterthought.</p>
+
+      <div class="img-full lb-trigger" data-src="../assets/images/epic/Athena-full-body.png" data-caption="Athena full body character sheet, five views" style="border-radius:6px; overflow:hidden; margin:20px 0 16px;">
+        <img src="../assets/images/epic/Athena-full-body.png" alt="Athena full body character sheet, five views" style="width:100%; display:block;" />
+        <div class="lb-hint"><span>click to expand</span></div>
+      </div>
+
+      <div class="img-grid-2">
+        <div class="lb-trigger" data-src="../assets/images/epic/Athena-07-headshots.png" data-caption="Athena headshots, front, angled and side views" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/epic/Athena-07-headshots.png" alt="Athena headshots, front, angled and side views" style="width:100%; display:block; aspect-ratio:unset; object-fit:unset;" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+        <div class="lb-trigger" data-src="../assets/images/epic/Odysseus-03a-headshots.png" data-caption="Odysseus headshots, six expressions" style="border-radius:6px; overflow:hidden;">
+          <img src="../assets/images/epic/Odysseus-03a-headshots.png" alt="Odysseus headshots, six expressions" style="width:100%; display:block; aspect-ratio:unset; object-fit:unset;" />
+          <div class="lb-hint"><span>click to expand</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. THE WORLD -->
+    <div class="exp-section">
+      <div class="exp-section-label">The World</div>
+      <h3>Building the environment</h3>
+      <p>The environment was built in Midjourney to match the illustrated style of the characters once they were locked. Burning Troy, Greek ships in the harbour, that amber and smoke palette. Getting the background and characters to feel like they existed in the same visual universe took longer than it should have. Because the characters came first.</p>
+
+      <div class="img-full lb-trigger" data-src="../assets/images/epic/troy-burn-16-9.png" data-caption="Burning Troy, environment concept, Greek ships in harbour, amber sky" style="border-radius:6px; overflow:hidden; margin:20px 0 16px;">
+        <img src="../assets/images/epic/troy-burn-16-9.png" alt="Burning Troy, environment concept, Greek ships in harbour, amber sky" style="width:100%; display:block;" />
+        <div class="lb-hint"><span>click to expand</span></div>
+      </div>
+
+    </div>
+
+    <!-- 7. KEY LEARNINGS — dark section -->
+    <div style="background:#1a1410; border-radius:12px; padding:40px 36px; margin:0 0 40px;">
+      <div class="exp-section-label" style="color:rgba(245,240,232,0.45);">What I Took Away</div>
+      <h3 style="color:#F5F0E8; margin-top:8px;">Four things I would tell myself at the start</h3>
+
+      <div class="learning-grid">
+        <div class="learning-card-dark">
+          <p class="learning-num">01</p>
+          <p class="learning-title">Audio-first is a completely different workflow</p>
+          <p class="learning-copy">When the audio already exists and can&#8217;t change, everything else has to bend to it. Your shot choices, your character distances, your pacing. It removes creative freedom and demands much tighter planning upfront.</p>
+        </div>
+        <div class="learning-card-dark">
+          <p class="learning-num">02</p>
+          <p class="learning-title">Lip sync degrades fast with distance</p>
+          <p class="learning-copy">Close-up, single character, facing camera: workable. Mid-shot, two characters, any movement: unreliable. Plan your lip sync shots as close-ups and cut away for everything else.</p>
+        </div>
+        <div class="learning-card-dark">
+          <p class="learning-num">03</p>
+          <p class="learning-title">Lock the style before you lock the characters</p>
+          <p class="learning-copy">The visual language of the world has to come first. Once characters start generating in the wrong style, you&#8217;re rebuilding from scratch anyway. Do it in the right order.</p>
+        </div>
+        <div class="learning-card-dark">
+          <p class="learning-num">04</p>
+          <p class="learning-title">Reference sheets are not optional</p>
+          <p class="learning-copy">Without a full character sheet locked early, every new generation pulls the character slightly somewhere else. The drift is subtle per shot and obvious across a sequence.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. TOOLS USED -->
+    <div class="exp-section">
+      <div class="exp-section-label">Tools Used</div>
+      <h3>What I used and what each one did</h3>
+
+      <div class="tool-cards">
+        <div class="tool-card">
+          <p class="tool-card-name">ChatGPT</p>
+          <p class="tool-card-copy">Character and prompt development. Used for working through the visual language, building character descriptions, and iterating on Midjourney prompt structure.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">Midjourney</p>
+          <p class="tool-card-copy">Character and environment assets. All still images: Athena, Odysseus, burning Troy, reference sheets. The illustrated mosaic aesthetic was developed and locked here.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">Kling Omni</p>
+          <p class="tool-card-copy">Video generation. Used for shots where lip sync was not required: wide shots, environment sequences, non-speaking character moments.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">Higgsfield Seedance</p>
+          <p class="tool-card-copy">Lip sync generation. The primary tool for all mouth-synced character close-ups. Results were workable on tight single-character shots and significantly less reliable on anything wider.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">Nano Banana Pro</p>
+          <p class="tool-card-copy">Audio isolation. Used to extract the vocal performance cleanly from the source track before feeding it into the lip sync pipeline.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">Lalal.ai</p>
+          <p class="tool-card-copy">Audio stem separation. Separated vocals, instrumentation and backing elements so each could be handled independently in the edit.</p>
+        </div>
+        <div class="tool-card">
+          <p class="tool-card-name">DaVinci Resolve</p>
+          <p class="tool-card-copy">Editing, sound design and colour grade. Where everything came together: cutting to the audio, managing the sync, laying in the separated stems, grading toward the amber and smoke palette.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. SHARE -->
+    <div class="post-share" id="labShare">
+      <span class="post-share-label">Share this</span>
+      <div class="post-share-buttons">
+        <a class="post-share-btn" id="shareLinkedIn"
+           href="https://www.linkedin.com/sharing/share-offsite/?url="
+           target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="post-share-btn" id="shareTwitter"
+           href="https://twitter.com/intent/tweet?text=&url="
+           target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        <button class="post-share-btn" id="shareCopyLink">Copy link</button>
+      </div>
+      <a class="post-share-convo"
+         href="https://www.linkedin.com/in/cheryl-harris-uk/"
+         target="_blank" rel="noopener noreferrer">
+        Thoughts? Continue the conversation on LinkedIn &#8594;
+      </a>
+    </div>
+
+    <!-- 10. EXP NAV -->
+    <div class="exp-nav">
+      <a href="world-building.html">&#8592; World Building</a>
+      <a href="index.html">Back to The Lab &#8594;</a>
+    </div>
+
+  </main>
+
+  <!-- Lightbox overlay -->
+  <div id="imgLightbox">
+    <button id="lbClose" aria-label="Close">&#x2715;</button>
+    <img id="lbImg" src="" alt="" />
+    <p id="lbCaption"></p>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <a href="../index.html" data-nav-href="index.html" class="nav-logo-text footer-logo-text">Flash<span class="logo-afro">Afro</span>.com</a>
+        <p class="footer-tagline handwritten">making &#8216;things&#8217; with AI &#10022;</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="../index.html" data-nav-href="index.html">Home</a>
+        <a href="../index.html#lab"      data-nav-href="index.html#lab">The Lab</a>
+        <a href="../index.html#thoughts" data-nav-href="index.html#thoughts">Thoughts</a>
+        <a href="../index.html#about"    data-nav-href="index.html#about">About</a>
+        <a href="../index.html#connect"  data-nav-href="index.html#connect">Connect</a>
+      </nav>
+      <p class="footer-copy">&#169; 2026 Cheryl Harris / FlashAfro.com Made with curiosity.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/nav-paths.js"></script>
+  <script src="../assets/js/cursor.js"></script>
+  <script src="../assets/js/nav-active.js"></script>
+  <script src="../main.js"></script>
+
+  <!-- Lightbox -->
+  <script>
+  (function () {
+    var lb      = document.getElementById('imgLightbox');
+    var lbImg   = document.getElementById('lbImg');
+    var lbCap   = document.getElementById('lbCaption');
+    var lbClose = document.getElementById('lbClose');
+
+    function openLightbox(src, caption) {
+      lbImg.src = src;
+      lbImg.alt = caption || '';
+      lbCap.textContent = caption || '';
+      lb.classList.add('lb-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('lb-open');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.lb-trigger').forEach(function (el) {
+      el.addEventListener('click', function () {
+        openLightbox(el.dataset.src, el.dataset.caption);
+      });
+    });
+    lbClose.addEventListener('click', function (e) {
+      e.stopPropagation();
+      closeLightbox();
+    });
+    lb.addEventListener('click', function (e) {
+      if (e.target === lb) closeLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+  </script>
+
+  <!-- Vimeo end screen suppression -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var iframes = document.querySelectorAll('iframe[src*="vimeo.com"]');
+    iframes.forEach(function (iframe) {
+      var player = new Vimeo.Player(iframe);
+      player.on('ended', function () {
+        player.setCurrentTime(0).then(function () {
+          player.pause();
+        });
+      });
+    });
+  });
+  </script>
+
+  <!-- Share section wiring -->
+  <script>
+  (function () {
+    var pageUrl   = encodeURIComponent('https://flashafro.com/lab/syncing-animation-to-music.html');
+    var pageTitle = encodeURIComponent(document.title);
+    var li = document.getElementById('shareLinkedIn');
+    var tw = document.getElementById('shareTwitter');
+    if (li) li.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + pageUrl;
+    if (tw) tw.href = 'https://twitter.com/intent/tweet?text=' + pageTitle + '&url=' + pageUrl;
+    var copyBtn = document.getElementById('shareCopyLink');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var btn = this;
+        var url = 'https://flashafro.com/lab/syncing-animation-to-music.html';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () {
+            btn.textContent = 'Copied!';
+            setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+          });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = url;
+          ta.style.cssText = 'position:fixed;opacity:0;';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          btn.textContent = 'Copied!';
+          setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+        }
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>
