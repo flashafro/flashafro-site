@@ -209,8 +209,6 @@ class TextScramble {
    HEADLINE CYCLING ERASER ANIMATION
    ============================================ */
 (function headlineCycle() {
-  if (window.matchMedia('(max-width: 768px)').matches) return;
-
   /* --- Variation data --- */
   const V = [
     { verb: 'Making',        things: '‘things’' },
